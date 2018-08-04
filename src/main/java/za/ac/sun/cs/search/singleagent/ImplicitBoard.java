@@ -36,6 +36,23 @@ public class Implicit extends Board {
         return result;
     }
 
+    @Override
+    public ImplicitBoard undoMove(Direction move) {
+
+        switch (move) {
+            case Direction.UP:
+                return makeMove(Direction.DOWN);
+            case Direction.DOWN:
+                return makeMove(Direction.UP);
+            case Direction.LEFT:
+                return makeMove(Direciton.RIGHT);
+            case Direction.RIGHT:
+                return makeMove(Direction.LEFT);
+            default:
+                return null;
+        }
+    }
+
     public ImplicitBoard swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
         int tempTile = this.getAt(toRow, toCol);
         this.putAt(toRow, toCol, 0);
