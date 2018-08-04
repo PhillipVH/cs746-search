@@ -30,7 +30,7 @@ public abstract class Board implements Comparable<Board> {
         goalState = new short[initialState.length];
 
         /* Load the initial state into this Board instance. */
-        for (int i = 0; i < initialState.length; i++) {
+        for (short i = 0; i < initialState.length; i++) {
             currentState[i] = initialState[i];
 
             /* Setup the goal state */
@@ -60,8 +60,8 @@ public abstract class Board implements Comparable<Board> {
 
         for (short i = 0; i < currentState.length; i++) {
             if (currentState[i] == 0) {
-                pos[0] = i % N - 1;
-                pos[1] = i / N;
+                pos[0] = (short) (i % N - 1);
+                pos[1] = (short) (i / N);
                 break;
             }
         }
@@ -79,7 +79,7 @@ public abstract class Board implements Comparable<Board> {
         if (emptyPosition[1] > 0) {legalMoves.add(Direction.LEFT);}
         if (emptyPosition[1] < N) {legalMoves.add(Direction.RIGHT);}
 
-        return legalMoves.toArray();
+        return legalMoves.toArray(new Direction[legalMoves.size()]);
     }
 
 
@@ -131,6 +131,5 @@ public abstract class Board implements Comparable<Board> {
         return 1;
     }
 
-    public abstract ExplicitBoard makeMove(Direction move);
-    public abstract ImplictBoard undoMove(Direction move);
+    public abstract Board makeMove(Direction move);
 }

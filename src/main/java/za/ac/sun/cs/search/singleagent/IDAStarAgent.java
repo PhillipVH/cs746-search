@@ -34,7 +34,7 @@ public class IDAStarAgent implements Agent {
     /* Search utility function */
 
     public int search(ArrayList<Direction> path, int costToNode, int bound) {
-        
+        return 0;
     }
 
     /* Misplaced Tiles Heuristic */
@@ -53,3 +53,4 @@ public class IDAStarAgent implements Agent {
 
         return cost;
     }
+}
