@@ -13,11 +13,40 @@ public class Implicit extends Board {
     }
 
     @Override
-    public ExplicitBoard makeMove(Direction move) {
-        return null;
+    public ImplicitBoard makeMove(Direction move) {
+        short[] emptyPosition = this.getEmptyTilePosition();
+        ImplicitBoard result = null;
+
+        switch (move) {
+            case Direction.UP:
+                result = swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
+                break;
+            case Direction.DOWN:
+                result = swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] + 1, emptyPosition[1]);
+                break;
+            case Direction.LEFT:
+                result = swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] - 1);
+                break;
+            case Direction.RIGHT:
+                result = swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
+                break;
+            default:
+                break;
+        }
+        return result;
     }
 
-    public ExplicitBoard getPrevious() {
+    public ImplicitBoard swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
+        int tempTile = this.getAt(toRow, toCol);
+        this.putAt(toRow, toCol, 0);
+        this.putAt(fromRow, fromCol, tempTile);
+
+        return new ImplicitBoard(this.getCurrentState);
+    }
+
+
+
+    public Direction getPrevious() {
         return previousMove;
     }
 

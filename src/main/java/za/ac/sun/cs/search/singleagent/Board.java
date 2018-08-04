@@ -88,6 +88,14 @@ public abstract class Board implements Comparable<Board> {
         return cost;
     }
 
+    public short[] getGoalState() {
+        return goalState;
+    }
+
+    public short[] getCurrentState() {
+        return currentState;
+    }
+
     public short getAt(int i, int j) {
         return currentState[i * N + j];
     }
@@ -124,4 +132,5 @@ public abstract class Board implements Comparable<Board> {
     }
 
     public abstract ExplicitBoard makeMove(Direction move);
+    public abstract ImplictBoard undoMove(Direction move);
 }
