@@ -1,13 +1,16 @@
 package za.ac.sun.cs.search.singleagent;
 
+import java.lang.Thread;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+
 
 public abstract class Board implements Comparable<Board> {
 
     protected short[] currentState;
-    protected short[] goalState = new short[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
-
+    protected short[] goalState;
     private Board parent;
 
     private int N;
@@ -26,9 +29,15 @@ public abstract class Board implements Comparable<Board> {
         /* Initialize the current state. */
         currentState = new short[initialState.length];
 
+        /* Initialize the goal state */
+        goalState = new short[initialState.length];
+
         /* Load the initial state into this Board instance. */
-        for (int i = 0; i < initialState.length; i++) {
+        for (short i = 0; i < initialState.length; i++) {
             currentState[i] = initialState[i];
+
+            /* Setup the goal state */
+            goalState[i] = i;
 
             /* Update the coordinates of the blank tile. */
             if (currentState[i] == 0) {
@@ -49,11 +58,49 @@ public abstract class Board implements Comparable<Board> {
 
     public abstract LinkedList<Board> getNeighbors();
 
+    public short[] getEmptyTilePosition() {
+        short[] pos = new short[2];
+
+        for (short i = 0; i < currentState.length; i++) {
+            if (currentState[i] == 0) {
+                pos[0] = (short) (i / N);
+                pos[1] = (short) (i % N);
+                break;
+            }
+        }
+
+        return pos;
+    }
+
     public Direction[] getLegalMoves() {
 
-        Direction[] legalMoves = {Direction.UP};
+        ArrayList<Direction> legalMoves = new ArrayList<Direction>();
+        short[] emptyPosition = getEmptyTilePosition();
 
-        return legalMoves;
+        if (emptyPosition[0] > 0) {legalMoves.add(Direction.UP);}
+        if (emptyPosition[0] < (N-1)) {legalMoves.add(Direction.DOWN);}
+        if (emptyPosition[1] > 0) {legalMoves.add(Direction.LEFT);}
+        if (emptyPosition[1] < (N-1)) {legalMoves.add(Direction.RIGHT);}
+
+        return legalMoves.toArray(new Direction[legalMoves.size()]);
+    }
+
+
+
+    public int getCost() {
+        return cost;
+    }
+
+    public short[] getGoalState() {
+        return goalState;
+    }
+
+    public short[] getCurrentState() {
+        return currentState;
+    }
+
+    public int getSize() {
+        return N;
     }
 
     public short getAt(int i, int j) {
@@ -66,6 +113,18 @@ public abstract class Board implements Comparable<Board> {
 
     public boolean isTerminal() {
         return Arrays.equals(currentState, goalState);
+    }
+
+    public void visualizePath(Direction[] path) throws Exception {
+        System.out.println("Initial Board:");
+        System.out.println(this);
+        for (Direction move : path) {
+            System.out.println("Move: " + move);
+            this.makeMove(move);
+            System.out.println(this);
+            Thread.sleep(500);
+
+        }
     }
 
     @Override
@@ -91,5 +150,5 @@ public abstract class Board implements Comparable<Board> {
         return 1;
     }
 
-    public abstract ExplicitBoard makeMove(Direction move);
+    public abstract Board makeMove(Direction move);
 }

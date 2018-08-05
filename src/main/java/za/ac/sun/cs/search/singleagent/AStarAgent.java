@@ -15,7 +15,9 @@ public class AStarAgent implements Agent {
         LinkedList<Board> closedList = new LinkedList<>();
         PriorityQueue<Board>  openSet = new PriorityQueue<>();
 
-        startBoard.setCostFromStart(0);
+       // startBoard.setCostFromStart(0);
+
+       return null;
     }
 
 

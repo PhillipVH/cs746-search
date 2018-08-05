@@ -1,5 +1,8 @@
 package za.ac.sun.cs.search.singleagent;
 
+import java.util.LinkedList;
+
+
 public class ExplicitBoard extends Board {
     protected ExplicitBoard parent;
     /**
@@ -24,4 +27,7 @@ public class ExplicitBoard extends Board {
     public void setParent(ExplicitBoard parent) {
         this.parent = parent;
     }
+
+    @Override
+    public LinkedList<Board> getNeighbors() {return null;}
 }
