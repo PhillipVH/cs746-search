@@ -16,3 +16,10 @@ dependencies {
     testCompile group: 'ch.qos.logback', name: 'logback-classic', version: '0.9.26'
 
 }
+
+test {
+    testLogging {       
+        showStandardStreams = true 
+        exceptionFormat = 'full'
+    }
+}

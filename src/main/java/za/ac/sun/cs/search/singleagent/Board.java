@@ -1,8 +1,11 @@
 package za.ac.sun.cs.search.singleagent;
 
+import java.lang.Thread;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+
 
 public abstract class Board implements Comparable<Board> {
 
@@ -60,8 +63,8 @@ public abstract class Board implements Comparable<Board> {
 
         for (short i = 0; i < currentState.length; i++) {
             if (currentState[i] == 0) {
-                pos[0] = (short) (i % N - 1);
-                pos[1] = (short) (i / N);
+                pos[0] = (short) (i / N);
+                pos[1] = (short) (i % N);
                 break;
             }
         }
@@ -75,9 +78,9 @@ public abstract class Board implements Comparable<Board> {
         short[] emptyPosition = getEmptyTilePosition();
 
         if (emptyPosition[0] > 0) {legalMoves.add(Direction.UP);}
-        if (emptyPosition[0] < N) {legalMoves.add(Direction.DOWN);}
+        if (emptyPosition[0] < (N-1)) {legalMoves.add(Direction.DOWN);}
         if (emptyPosition[1] > 0) {legalMoves.add(Direction.LEFT);}
-        if (emptyPosition[1] < N) {legalMoves.add(Direction.RIGHT);}
+        if (emptyPosition[1] < (N-1)) {legalMoves.add(Direction.RIGHT);}
 
         return legalMoves.toArray(new Direction[legalMoves.size()]);
     }
@@ -96,6 +99,10 @@ public abstract class Board implements Comparable<Board> {
         return currentState;
     }
 
+    public int getSize() {
+        return N;
+    }
+
     public short getAt(int i, int j) {
         return currentState[i * N + j];
     }
@@ -106,6 +113,18 @@ public abstract class Board implements Comparable<Board> {
 
     public boolean isTerminal() {
         return Arrays.equals(currentState, goalState);
+    }
+
+    public void visualizePath(Direction[] path) throws Exception {
+        System.out.println("Initial Board:");
+        System.out.println(this);
+        for (Direction move : path) {
+            System.out.println("Move: " + move);
+            this.makeMove(move);
+            System.out.println(this);
+            Thread.sleep(500);
+
+        }
     }
 
     @Override
