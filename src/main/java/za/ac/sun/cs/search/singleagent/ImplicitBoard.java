@@ -82,7 +82,4 @@ public class ImplicitBoard extends Board {
     public void setPreviousMove(Direction move) {
         this.previousMove = move;
     }
-
-    @Override
-    public LinkedList<Board> getNeighbors() {return null;}
 }

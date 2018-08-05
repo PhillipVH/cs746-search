@@ -56,8 +56,6 @@ public abstract class Board implements Comparable<Board> {
         return (v > 0) ? 1 : 0;
     }
 
-    public abstract LinkedList<Board> getNeighbors();
-
     public short[] getEmptyTilePosition() {
         short[] pos = new short[2];
 

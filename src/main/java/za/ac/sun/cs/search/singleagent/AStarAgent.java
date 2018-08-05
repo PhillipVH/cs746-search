@@ -6,20 +6,14 @@ public class AStarAgent implements Agent {
     private short[] initialState;
     private short[] goalState;
 
+    private ExplicitBoard startBoard;
+    private ExplicitBoard goalBoard = new ExplicitBoard(new short[]{0, 1, 2, 3, 4, 5, 6, 7, 8});
+
     public AStarAgent(short[] configuration) {
         this.initialState = configuration;
+        this.startBoard = new ExplicitBoard(this.initialState);
+        this.goalState = new short[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
     }
-
-    public LinkedList<Board> findPath(Board startBoard) {
-
-        LinkedList<Board> closedList = new LinkedList<>();
-        PriorityQueue<Board>  openSet = new PriorityQueue<>();
-
-       // startBoard.setCostFromStart(0);
-
-       return null;
-    }
-
 
     /**
      * Solve the given N-puzzle using A* on an explicit tree.
@@ -30,92 +24,101 @@ public class AStarAgent implements Agent {
     @Override
     public Direction[] solve() {
 
-        ExplicitBoard start = new ExplicitBoard(initialState);
+        /* Start by creating the frontiers. */
+        PriorityList openList = new PriorityList();
+        LinkedList closedList = new LinkedList();
 
-        TreeSet<ExplicitBoard> closedSet = new TreeSet<>();
+        /* Set up our initial node. */
+        this.startBoard.setCostFromStart(0);
+        this.startBoard.setEstimatedCost(getHeuristicCostEstimate(goalBoard));
+        this.startBoard.setParent(null);
 
-        TreeSet<ExplicitBoard> openSet = new TreeSet<>();
-        openSet.add(start);
+        openList.add(startBoard);
 
-        HashMap<ExplicitBoard, ExplicitBoard> cameFrom = new HashMap<>();
+        /* While there is still world to explore, explore it! */
+        while (!openList.isEmpty()) {
+            ExplicitBoard board = (ExplicitBoard) openList.removeFirst();
 
-        HashMap<ExplicitBoard, Integer> gScore = new HashMap<>();
-
-        gScore.put(start, 0);
-
-        HashMap<ExplicitBoard, Integer> fScore = new HashMap<>();
-
-        fScore.put(start, getHeuristicCostEstimate(start));
-
-        while (!openSet.isEmpty()) {
-            // TODO Integrate with fScore
-            ExplicitBoard current = openSet.first();
-
-            if (current.isTerminal()) {
-                LinkedList<ExplicitBoard> solution = reconstructPath(cameFrom, current);
-
-                for (ExplicitBoard board : solution) {
-                    System.out.println(board.toString());
-                }
-                return null;
+            /* If this board is terminal we have found our goal.
+             * Reconstruct and return the path we have taken.
+             */
+            if (board.isTerminal()) {
+                return constructPath(board);
             }
 
-            openSet.remove(current);
-            closedSet.add(current);
+            /* Get a list of all neighbors. */
+            LinkedList<ExplicitBoard> neighbors = board.getNeighbors();
 
-            Direction[] legalMoves = current.getLegalMoves();
+            for (ExplicitBoard neighbor : neighbors) {
+                boolean isOpen = openList.contains(neighbor);
+                boolean isClosed = closedList.contains(neighbor);
 
-            for (Direction move : legalMoves) {
-                ExplicitBoard neighbor = current.makeMove(move);
+                int costFromStart = neighbor.getCostFromStart() + board.getCost();
 
-                if (closedSet.contains(neighbor)) {
-                    continue;
+                if ((!isOpen && !isClosed) || costFromStart < neighbor.getCostFromStart()) {
+                    neighbor.setParent(board);
+                    neighbor.setCostFromStart(costFromStart);
+                    neighbor.setEstimatedCost(getHeuristicCostEstimate(goalBoard));
+
+                    if (isClosed) {
+                        closedList.remove(neighbor);
+                    }
+
+                    if (!isOpen) {
+                        openList.add(neighbor);
+                    }
                 }
 
-                int tentative_gScore = gScore.get(current) + 1; // distanceBetween(current, neighbor)
-
-                if (!openSet.contains(neighbor)) {
-                    openSet.add(neighbor);
-                } else if (tentative_gScore >= gScore.get(neighbor)) {
-                    continue;
-                }
-
-                cameFrom.put(neighbor, current);
-                gScore.put(neighbor, tentative_gScore);
-                fScore.put(neighbor, gScore.get(neighbor) + getHeuristicCostEstimate(neighbor));
+                closedList.add(neighbor);
             }
 
         }
+
+        return null; // TODO In future this should return Optional.empty().
+    }
+
+    private Direction[] constructPath(ExplicitBoard board) {
+        LinkedList<ExplicitBoard> path = new LinkedList<>();
+        System.out.println(board);
+
+        while (board.getParent() != null) {
+            path.addFirst(board);
+            board = board.getParent();
+            System.out.println(board.toString());
+        }
+
 
         return null;
     }
 
-    private LinkedList<ExplicitBoard> reconstructPath(HashMap<ExplicitBoard, ExplicitBoard> cameFrom, ExplicitBoard current) {
-        LinkedList<ExplicitBoard> totalPath = new LinkedList<>();
-        totalPath.add(current);
-
-        while (cameFrom.keySet().contains(current)) {
-            current = cameFrom.get(current);
-            totalPath.add(current);
-        }
-
-        return totalPath;
-
-    }
+    /* Misplaced Tiles Heuristic */
 
     private Integer getHeuristicCostEstimate(Board board) {
         int cost = 0;
 
         int idx = 0;
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
+        int N = board.getSize();
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
                 if (board.getAt(i, j) != goalState[idx++]) {
                     cost += 1;
                 }
             }
         }
-
         return cost;
     }
 
+}
+
+class PriorityList extends LinkedList {
+
+    public void add(Comparable object) {
+        for (int i = 0; i < size(); i++) {
+            if (object.compareTo(get(i)) <= 0) {
+                add(i, object);
+                return;
+            }
+        }
+        addLast(object);
+    }
 }
