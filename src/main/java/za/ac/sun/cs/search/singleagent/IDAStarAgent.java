@@ -1,6 +1,7 @@
 package za.ac.sun.cs.search.singleagent;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class IDAStarAgent implements Agent {
     private short[] initialState;
@@ -19,22 +20,42 @@ public class IDAStarAgent implements Agent {
      */
     @Override
     public Direction[] solve() {
-        ArrayList<Direction> path = new ArrayList<Direction>();
+        Queue<Direction> path = new LinkedList<Direction>();
         ImplicitBoard board = new ImplicitBoard(initialState);
         int bound = getHeuristicCostEstimate(board);
-
-
+        boolean found = false;
+        
         goalState = board.getGoalState();
 
-        
+        while (!found) {
+            int i = search(board, path, 0, bound);
+            if (i == -1) {found = true;}
+            bound = i;
+        }        
 
-        return null;
+        return path.toArray(new Direction[path.size()]);
     }
 
     /* Search utility function */
 
-    public int search(ArrayList<Direction> path, int costToNode, int bound) {
-        return 0;
+    public int search(ImplicitBoard board, Queue<Direction> path, int g, int bound) {        
+        int f = g + getHeuristicCostEstimate(board);
+
+        if (f > bound) {return f;}
+        if (board.isTerminal()) {return -1;}
+
+        int min = (int) Double.NEGATIVE_INFINITY;
+
+        for (Direction move: board.getLegalMoves()) {
+            ImplicitBoard temp = board.makeMove(move);
+            path.add(move);
+            int t = search(temp, path, g + 1, bound);
+            if (t == -1) {return -1;}
+            if (t < min) {min = t;}
+            path.remove();
+        }
+
+        return min;
     }
 
     /* Misplaced Tiles Heuristic */
