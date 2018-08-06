@@ -8,6 +8,7 @@ public class ExplicitBoard extends Board {
     private ExplicitBoard parent;
     private int costFromStart;
     private int estimatedCost;
+    private int cost;
 
     /**
      * Initialize the internal state of the board and calculate the size of it.
@@ -17,6 +18,28 @@ public class ExplicitBoard extends Board {
     public ExplicitBoard(short[] initialState) {
         super(initialState);
         this.parent = null;
+    }
+
+    private int getHeuristicCostEstimateRaw() {
+        /* Misplaced Tiles Heuristic */
+        int cost = 0;
+
+        int idx = 0;
+        int N = (int) Math.sqrt(goalState.length);
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                /* Don't count the blank tile. */
+                if (this.getAt(i, j) == 0) {
+                    idx++;
+                    continue;
+                }
+                if (this.getAt(i, j) != goalState[idx++]) {
+                    cost += 1;
+                }
+            }
+        }
+
+        return cost;
     }
 
     @Override
@@ -73,11 +96,8 @@ public class ExplicitBoard extends Board {
 
     public void setCostFromStart(int cost) {
         this.costFromStart = cost;
-    }
-
-    public void setEstimatedCost(int cost) {
-        this.estimatedCost = cost;
-
+        this.estimatedCost = getHeuristicCostEstimateRaw();
+        this.cost = this.costFromStart + estimatedCost;
     }
 
     public int getEstimatedCost() {
@@ -85,7 +105,7 @@ public class ExplicitBoard extends Board {
     }
 
     public int getCost() {
-        return costFromStart + estimatedCost;
+        return this.cost;
     }
 
     /**
@@ -101,10 +121,16 @@ public class ExplicitBoard extends Board {
         /* Take each move, apply it to the board, and add it to the list. */
         for (Direction move : legalMoves) {
             ExplicitBoard neighbor = this.makeMove(move);
+            neighbor.setCostFromStart(this.costFromStart + 1);
             neighbors.add(neighbor);
         }
 
         return neighbors;
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(this.currentState);
     }
 }
 

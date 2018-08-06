@@ -10,10 +10,23 @@ public class AStarAgent implements Agent {
     private ExplicitBoard goalBoard = new ExplicitBoard(new short[]{0, 1, 2, 3, 4, 5, 6, 7, 8});
 
     public AStarAgent(short[] configuration) {
-        this.initialState = configuration;
+        this.initialState = Arrays.copyOf(configuration, configuration.length);
         this.startBoard = new ExplicitBoard(this.initialState);
         this.goalState = new short[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
     }
+
+    Comparator<ExplicitBoard> explicitBoardComparator = (theBoard, otherBoard) -> {
+        int v = theBoard.getCost() - otherBoard.getCost();
+
+        if (v < 0) {
+            return -1;
+        } else if (v > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    };
+
 
     /**
      * Solve the given N-puzzle using A* on an explicit tree.
@@ -25,55 +38,74 @@ public class AStarAgent implements Agent {
     public Direction[] solve() {
 
         /* Start by creating the frontiers. */
-        PriorityList openList = new PriorityList();
-        LinkedList closedList = new LinkedList();
+        PriorityQueue<ExplicitBoard> openSet = new PriorityQueue<>(explicitBoardComparator);
+        HashSet<ExplicitBoard> closedSet = new HashSet<>();
 
         /* Set up our initial node. */
         this.startBoard.setCostFromStart(0);
-        this.startBoard.setEstimatedCost(getHeuristicCostEstimate(goalBoard));
+
         this.startBoard.setParent(null);
 
-        openList.add(startBoard);
+        openSet.add(startBoard);
 
         /* While there is still world to explore, explore it! */
-        while (!openList.isEmpty()) {
-            ExplicitBoard board = (ExplicitBoard) openList.removeFirst();
+        while (!openSet.isEmpty()) {
 
-            /* If this board is terminal we have found our goal.
-             * Reconstruct and return the path we have taken.
-             */
+            /* Get the next board in the open set that has the lowest f-cost. */
+            ExplicitBoard board = openSet.poll();
+
+            /* Add the current node to the closed set. */
+            closedSet.add(board);
+
+            /* If this node is terminal, we have found the solution. */
             if (board.isTerminal()) {
                 return constructPath(board);
             }
 
-            /* Get a list of all neighbors. */
+            /* Get all the neighbors. */
             LinkedList<ExplicitBoard> neighbors = board.getNeighbors();
 
             for (ExplicitBoard neighbor : neighbors) {
-                boolean isOpen = openList.contains(neighbor);
-                boolean isClosed = closedList.contains(neighbor);
+                neighbor.setCostFromStart(board.getCostFromStart() + 1);
 
-                int costFromStart = neighbor.getCostFromStart() + board.getCost();
+                /* Capture some information about the node. */
+                boolean isOpen = openSet.contains(neighbor);
+                boolean isClosed = closedSet.contains(neighbor);
 
-                if ((!isOpen && !isClosed) || costFromStart < neighbor.getCostFromStart()) {
-                    neighbor.setParent(board);
-                    neighbor.setCostFromStart(costFromStart);
-                    neighbor.setEstimatedCost(getHeuristicCostEstimate(goalBoard));
+                /* Ignore nodes in the closed list. */
+                if (isClosed) {
+                    continue;
+                }
 
-                    if (isClosed) {
-                        closedList.remove(neighbor);
-                    }
+                /* If node is not in open set, add it. */
+                if (!isOpen) {
+                    openSet.add(neighbor);
+                }
 
-                    if (!isOpen) {
-                        openList.add(neighbor);
+                /* If the node is in the open set, see if this path is a better one. */
+                if (isOpen) {
+                    /* If the cost to get to this neighbor through this square is lower, update. */
+                    if (board.getCostFromStart() + neighbor.getCostFromStart() < (board.getCostFromStart() + 1)) {
+                        neighbor.setCostFromStart(board.getCostFromStart() + 1);
+
+                        assert neighbor.getCost() <= board.getCost();
+                        neighbor.setParent(board);
                     }
                 }
 
-                closedList.add(neighbor);
+                assert neighbor.getCostFromStart() > 0;
+
+                /* Check if the neighbor node has not been traversed or if a shorter
+                 * path to this neighbor node is found.
+                 */
             }
 
-        }
 
+            openSet.remove(board);
+            closedSet.add(board);
+
+
+        }
         return null; // TODO In future this should return Optional.empty().
     }
 
@@ -91,34 +123,5 @@ public class AStarAgent implements Agent {
         return null;
     }
 
-    /* Misplaced Tiles Heuristic */
 
-    private Integer getHeuristicCostEstimate(Board board) {
-        int cost = 0;
-
-        int idx = 0;
-        int N = board.getSize();
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                if (board.getAt(i, j) != goalState[idx++]) {
-                    cost += 1;
-                }
-            }
-        }
-        return cost;
-    }
-
-}
-
-class PriorityList extends LinkedList {
-
-    public void add(Comparable object) {
-        for (int i = 0; i < size(); i++) {
-            if (object.compareTo(get(i)) <= 0) {
-                add(i, object);
-                return;
-            }
-        }
-        addLast(object);
-    }
 }
