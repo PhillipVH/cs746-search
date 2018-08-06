@@ -72,6 +72,9 @@ public class AStarAgent implements Agent {
                 boolean isOpen = openSet.contains(neighbor);
                 boolean isClosed = closedSet.contains(neighbor);
 
+                /* Give these guys a daddy. */
+                neighbor.setParent(board);
+
                 /* Ignore nodes in the closed list. */
                 if (isClosed) {
                     continue;
@@ -94,10 +97,6 @@ public class AStarAgent implements Agent {
                 }
 
                 assert neighbor.getCostFromStart() > 0;
-
-                /* Check if the neighbor node has not been traversed or if a shorter
-                 * path to this neighbor node is found.
-                 */
             }
 
 
@@ -113,11 +112,14 @@ public class AStarAgent implements Agent {
         LinkedList<ExplicitBoard> path = new LinkedList<>();
         System.out.println(board);
 
+        int i = 0;
         while (board.getParent() != null) {
+            i++;
             path.addFirst(board);
             board = board.getParent();
             System.out.println(board.toString());
         }
+        System.out.println("Move :" + i);
 
 
         return null;
