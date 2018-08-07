@@ -11,10 +11,8 @@ public abstract class Board implements Comparable<Board> {
 
     protected short[] currentState;
     protected short[] goalState;
-    private Board parent;
 
     private int N;
-    private int blankIdx;
     private int cost;
 
     /**
@@ -38,11 +36,6 @@ public abstract class Board implements Comparable<Board> {
 
             /* Setup the goal state */
             goalState[i] = i;
-
-            /* Update the coordinates of the blank tile. */
-            if (currentState[i] == 0) {
-                blankIdx = i;
-            }
         }
         currentState = initialState;
     }
@@ -53,10 +46,8 @@ public abstract class Board implements Comparable<Board> {
 
         int v = thisValue - otherValue;
 
-        return (v > 0) ? 1 : 0;
+        return Integer.compare(v, 0);
     }
-
-    public abstract LinkedList<Board> getNeighbors();
 
     public short[] getEmptyTilePosition() {
         short[] pos = new short[2];
@@ -146,7 +137,7 @@ public abstract class Board implements Comparable<Board> {
         return outputBuilder.toString();
     }
 
-    public Integer getHeuristicCostEstimate() {
+    public Integer getHeuristicCostEstimate(Board board) {
         return 1;
     }
 

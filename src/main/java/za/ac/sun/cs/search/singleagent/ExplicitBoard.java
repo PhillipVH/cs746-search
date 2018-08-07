@@ -1,10 +1,15 @@
 package za.ac.sun.cs.search.singleagent;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 
 
 public class ExplicitBoard extends Board {
-    protected ExplicitBoard parent;
+    private ExplicitBoard parent;
+    private int costFromStart;
+    private int estimatedCost;
+    private int cost;
+
     /**
      * Initialize the internal state of the board and calculate the size of it.
      *
@@ -15,9 +20,66 @@ public class ExplicitBoard extends Board {
         this.parent = null;
     }
 
+    private int getHeuristicCostEstimateRaw() {
+        /* Misplaced Tiles Heuristic */
+        int cost = 0;
+
+        int idx = 0;
+        int N = (int) Math.sqrt(goalState.length);
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                /* Don't count the blank tile. */
+                if (this.getAt(i, j) == 0) {
+                    idx++;
+                    continue;
+                }
+                if (this.getAt(i, j) != goalState[idx++]) {
+                    cost += 1;
+                }
+            }
+        }
+
+        return cost;
+    }
+
     @Override
     public ExplicitBoard makeMove(Direction move) {
-        return null;
+        short[] emptyPosition = this.getEmptyTilePosition();
+
+        switch (move) {
+            case UP:
+                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
+            case DOWN:
+                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] + 1, emptyPosition[1]);
+            case LEFT:
+                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] - 1);
+            case RIGHT:
+                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
+            default:
+                return null;
+        }
+    }
+
+    public ExplicitBoard swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
+        int tempTile = this.getAt(toRow, toCol);
+        ExplicitBoard temp = new ExplicitBoard(Arrays.copyOf(this.getCurrentState(), this.getCurrentState().length));
+        temp.putAt(toRow, toCol, (short) 0);
+        temp.putAt(fromRow, fromCol, (short) tempTile);
+
+        return temp;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+
+        if (!(o instanceof ExplicitBoard)) {
+            return false;
+        }
+
+        return Arrays.equals(this.getCurrentState(), ((ExplicitBoard) o).getCurrentState());
     }
 
     public ExplicitBoard getParent() {
@@ -28,6 +90,49 @@ public class ExplicitBoard extends Board {
         this.parent = parent;
     }
 
+    public int getCostFromStart() {
+        return costFromStart;
+    }
+
+    public void setCostFromStart(int cost) {
+        this.costFromStart = cost;
+        this.estimatedCost = getHeuristicCostEstimateRaw();
+        this.cost = this.costFromStart + estimatedCost;
+    }
+
+    public int getEstimatedCost() {
+        return this.estimatedCost;
+    }
+
+    public int getCost() {
+        return this.cost;
+    }
+
+    /**
+     * Return all the board states we can reach from this node.
+     *
+     * @return All the reachable states from this node.
+     */
+    public LinkedList<ExplicitBoard> getNeighbors() {
+        /* Start by getting the moves. */
+        Direction[] legalMoves = getLegalMoves();
+        LinkedList<ExplicitBoard> neighbors = new LinkedList<>();
+
+        /* Take each move, apply it to the board, and add it to the list. */
+        for (Direction move : legalMoves) {
+            ExplicitBoard neighbor = this.makeMove(move);
+            neighbor.setCostFromStart(this.costFromStart + 1);
+            neighbors.add(neighbor);
+        }
+
+        return neighbors;
+    }
+
     @Override
-    public LinkedList<Board> getNeighbors() {return null;}
+    public int hashCode() {
+        return Arrays.hashCode(this.currentState);
+    }
 }
+
+
+

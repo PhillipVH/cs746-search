@@ -6,19 +6,26 @@ public class AStarAgent implements Agent {
     private short[] initialState;
     private short[] goalState;
 
+    private ExplicitBoard startBoard;
+    private ExplicitBoard goalBoard = new ExplicitBoard(new short[]{0, 1, 2, 3, 4, 5, 6, 7, 8});
+
     public AStarAgent(short[] configuration) {
-        this.initialState = configuration;
+        this.initialState = Arrays.copyOf(configuration, configuration.length);
+        this.startBoard = new ExplicitBoard(this.initialState);
+        this.goalState = new short[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
     }
 
-    public LinkedList<Board> findPath(Board startBoard) {
+    Comparator<ExplicitBoard> explicitBoardComparator = (theBoard, otherBoard) -> {
+        int v = theBoard.getCost() - otherBoard.getCost();
 
-        LinkedList<Board> closedList = new LinkedList<>();
-        PriorityQueue<Board>  openSet = new PriorityQueue<>();
-
-       // startBoard.setCostFromStart(0);
-
-       return null;
-    }
+        if (v < 0) {
+            return -1;
+        } else if (v > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    };
 
 
     /**
@@ -30,92 +37,93 @@ public class AStarAgent implements Agent {
     @Override
     public Direction[] solve() {
 
-        ExplicitBoard start = new ExplicitBoard(initialState);
+        /* Start by creating the frontiers. */
+        PriorityQueue<ExplicitBoard> openSet = new PriorityQueue<>(explicitBoardComparator);
+        HashSet<ExplicitBoard> closedSet = new HashSet<>();
 
-        TreeSet<ExplicitBoard> closedSet = new TreeSet<>();
+        /* Set up our initial node. */
+        this.startBoard.setCostFromStart(0);
 
-        TreeSet<ExplicitBoard> openSet = new TreeSet<>();
-        openSet.add(start);
+        this.startBoard.setParent(null);
 
-        HashMap<ExplicitBoard, ExplicitBoard> cameFrom = new HashMap<>();
+        openSet.add(startBoard);
 
-        HashMap<ExplicitBoard, Integer> gScore = new HashMap<>();
-
-        gScore.put(start, 0);
-
-        HashMap<ExplicitBoard, Integer> fScore = new HashMap<>();
-
-        fScore.put(start, getHeuristicCostEstimate(start));
-
+        /* While there is still world to explore, explore it! */
         while (!openSet.isEmpty()) {
-            // TODO Integrate with fScore
-            ExplicitBoard current = openSet.first();
 
-            if (current.isTerminal()) {
-                LinkedList<ExplicitBoard> solution = reconstructPath(cameFrom, current);
+            /* Get the next board in the open set that has the lowest f-cost. */
+            ExplicitBoard board = openSet.poll();
 
-                for (ExplicitBoard board : solution) {
-                    System.out.println(board.toString());
-                }
-                return null;
+            /* Add the current node to the closed set. */
+            closedSet.add(board);
+
+            /* If this node is terminal, we have found the solution. */
+            if (board.isTerminal()) {
+                return constructPath(board);
             }
 
-            openSet.remove(current);
-            closedSet.add(current);
+            /* Get all the neighbors. */
+            LinkedList<ExplicitBoard> neighbors = board.getNeighbors();
 
-            Direction[] legalMoves = current.getLegalMoves();
+            for (ExplicitBoard neighbor : neighbors) {
+                neighbor.setCostFromStart(board.getCostFromStart() + 1);
 
-            for (Direction move : legalMoves) {
-                ExplicitBoard neighbor = current.makeMove(move);
+                /* Capture some information about the node. */
+                boolean isOpen = openSet.contains(neighbor);
+                boolean isClosed = closedSet.contains(neighbor);
 
-                if (closedSet.contains(neighbor)) {
+                /* Give these guys a daddy. */
+                neighbor.setParent(board);
+
+                /* Ignore nodes in the closed list. */
+                if (isClosed) {
                     continue;
                 }
 
-                int tentative_gScore = gScore.get(current) + 1; // distanceBetween(current, neighbor)
-
-                if (!openSet.contains(neighbor)) {
+                /* If node is not in open set, add it. */
+                if (!isOpen) {
                     openSet.add(neighbor);
-                } else if (tentative_gScore >= gScore.get(neighbor)) {
-                    continue;
                 }
 
-                cameFrom.put(neighbor, current);
-                gScore.put(neighbor, tentative_gScore);
-                fScore.put(neighbor, gScore.get(neighbor) + getHeuristicCostEstimate(neighbor));
+                /* If the node is in the open set, see if this path is a better one. */
+                if (isOpen) {
+                    /* If the cost to get to this neighbor through this square is lower, update. */
+                    if (board.getCostFromStart() + neighbor.getCostFromStart() < (board.getCostFromStart() + 1)) {
+                        neighbor.setCostFromStart(board.getCostFromStart() + 1);
+
+                        assert neighbor.getCost() <= board.getCost();
+                        neighbor.setParent(board);
+                    }
+                }
+
+                assert neighbor.getCostFromStart() > 0;
             }
+
+
+            openSet.remove(board);
+            closedSet.add(board);
+
 
         }
+        return null; // TODO In future this should return Optional.empty().
+    }
+
+    private Direction[] constructPath(ExplicitBoard board) {
+        LinkedList<ExplicitBoard> path = new LinkedList<>();
+        System.out.println(board);
+
+        int i = 0;
+        while (board.getParent() != null) {
+            i++;
+            path.addFirst(board);
+            board = board.getParent();
+            System.out.println(board.toString());
+        }
+        System.out.println("Move :" + i);
+
 
         return null;
     }
 
-    private LinkedList<ExplicitBoard> reconstructPath(HashMap<ExplicitBoard, ExplicitBoard> cameFrom, ExplicitBoard current) {
-        LinkedList<ExplicitBoard> totalPath = new LinkedList<>();
-        totalPath.add(current);
-
-        while (cameFrom.keySet().contains(current)) {
-            current = cameFrom.get(current);
-            totalPath.add(current);
-        }
-
-        return totalPath;
-
-    }
-
-    private Integer getHeuristicCostEstimate(Board board) {
-        int cost = 0;
-
-        int idx = 0;
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (board.getAt(i, j) != goalState[idx++]) {
-                    cost += 1;
-                }
-            }
-        }
-
-        return cost;
-    }
 
 }
