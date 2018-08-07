@@ -1,5 +1,6 @@
 package za.ac.sun.cs.search.singleagent;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -29,7 +30,6 @@ public class IDFSAgent implements Agent {
         int depth = 4;
 
         while (!result.getFound()) {
-            System.out.println("Depth: " + depth);
             path = new Stack<Direction>();
             dfs(board, depth, path, result);
             if (result.getFound()) {
@@ -57,51 +57,31 @@ public class IDFSAgent implements Agent {
                 return;
             }
         } else if (depth > 0) {
-            boolean remaining = false;
+            Direction previousMove = board.getPrevious();
             for (Direction move : board.getLegalMoves()) {
                 if (board.getPrevious() != null && move == board.reverseMove(board.getPrevious())) {
                     continue;
                 }
                 path.add(move);
-                ImplicitBoard temp = board.makeMove(move);
-                temp.setPreviousMove(move);
-                dfs(temp, depth - 1, path, result);
+                //ImplicitBoard temp = new ImplicitBoard(Arrays.copyOf(board.getCurrentState(), board.getCurrentState().length));
+                board.makeMove(move);
+                board.setPreviousMove(move);
+                dfs(board, depth - 1, path, result);
                 if (result.getFound()) {
                     return;
                 } else {
                     result.setRemaining(true);
                 }
 
-                path.pop();
+                board.undoMove(path.pop());
+                board.setPreviousMove(previousMove);
+
             }
 
             result.setFound(false);
             return;
         }
 
-    }
-
-    /* Misplaced Tiles Heuristic */
-
-    private Integer getHeuristicCostEstimate(Board board) {
-        int cost = 0;
-
-        int idx = 0;
-        int N = (int) Math.sqrt(goalState.length);
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                /* Don't count the blank tile. */
-                if (board.getAt(i, j) == 0) {
-                    idx++;
-                    continue;
-                }
-                if (board.getAt(i, j) != goalState[idx++]) {
-                    cost += 1;
-                }
-            }
-        }
-
-        return cost;
     }
 
     public ImplicitBoard getBoard() {

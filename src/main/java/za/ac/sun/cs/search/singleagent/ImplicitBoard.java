@@ -21,41 +21,50 @@ public class ImplicitBoard extends Board {
         
         switch (move) {
             case UP:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
+                swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
+                break;
             case DOWN:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] + 1, emptyPosition[1]);
+                swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] + 1, emptyPosition[1]);
+                break;
             case LEFT:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] - 1);
+                swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] - 1);
+                break;
             case RIGHT:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
+                swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
+                break;
             default:
                 return null;
         }
+
+        return null;
     }
 
-    public ImplicitBoard undoMove(Direction move) {
+    public void undoMove(Direction move) {
 
         switch (move) {
             case UP:
-                return makeMove(Direction.DOWN);
+                makeMove(Direction.DOWN);
+                break;
             case DOWN:
-                return makeMove(Direction.UP);
+                makeMove(Direction.UP);
+                break;
             case LEFT:
-                return makeMove(Direction.RIGHT);
+                makeMove(Direction.RIGHT);
+                break;
             case RIGHT:
-                return makeMove(Direction.LEFT);
+                makeMove(Direction.LEFT);
+                break;
             default:
-                return null;
+                return;
         }
     }
 
-    public ImplicitBoard swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
+    public void swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
         int tempTile = this.getAt(toRow, toCol);
-        ImplicitBoard temp = new ImplicitBoard(this.getCurrentState());
-        temp.putAt(toRow, toCol, (short) 0);
-        temp.putAt(fromRow, fromCol, (short) tempTile);
+        this.putAt(toRow, toCol, (short) 0);
+        this.putAt(fromRow, fromCol, (short) tempTile);
 
-        return temp;
+        return;
     }
 
     public Direction reverseMove(Direction move) {

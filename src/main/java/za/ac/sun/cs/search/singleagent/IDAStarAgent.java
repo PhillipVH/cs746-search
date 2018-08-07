@@ -51,15 +51,15 @@ public class IDAStarAgent implements Agent {
         }
 
         int min = (int) Double.POSITIVE_INFINITY;
-
+        Direction previousMove = board.getPrevious();
         for (Direction move : board.getLegalMoves()) {
             if (board.getPrevious() != null && move == board.reverseMove(board.getPrevious())) {
                 continue;
             }
-            ImplicitBoard temp = board.makeMove(move);
-            temp.setPreviousMove(move);
+            board.makeMove(move);
+            board.setPreviousMove(move);
             path.add(move);
-            int t = search(temp, path, g + 1, bound);
+            int t = search(board, path, g + 1, bound);
             if (t == -1) {
                 return -1;
             }
@@ -67,7 +67,8 @@ public class IDAStarAgent implements Agent {
                 min = t;
             }
             path.pop();
-            board = board.undoMove(move);
+            board.undoMove(move);
+            board.setPreviousMove(previousMove);
         }
 
         return min;
