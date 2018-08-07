@@ -46,7 +46,7 @@ public class IDFSAgent implements Agent {
 
     /* Search utility function */
 
-    public void dfs(Board board, int depth, Stack<Direction> path, DFSResult result) {
+    public void dfs(ImplicitBoard board, int depth, Stack<Direction> path, DFSResult result) {
 
         if (depth == 0) {
             if (board.isTerminal()) {
