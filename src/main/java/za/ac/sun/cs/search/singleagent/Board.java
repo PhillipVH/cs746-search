@@ -37,7 +37,7 @@ public abstract class Board implements Comparable<Board> {
             /* Setup the goal state */
             goalState[i] = i;
         }
-        currentState = Arrays.copyOf(initialState, initialState.length);
+        currentState = initialState;
     }
 
     public int compareTo(Board other) {
