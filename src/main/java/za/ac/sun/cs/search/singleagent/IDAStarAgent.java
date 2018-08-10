@@ -1,7 +1,5 @@
 package za.ac.sun.cs.search.singleagent;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Stack;
 
 public class IDAStarAgent implements Agent {
@@ -25,7 +23,7 @@ public class IDAStarAgent implements Agent {
      */
     @Override
     public Direction[] solve() {
-        Stack<Direction> path = new Stack<Direction>();
+        Stack<Direction> path = new Stack<>();
         int bound = getHeuristicCostEstimate(board);
         boolean found = false;
         
@@ -35,7 +33,7 @@ public class IDAStarAgent implements Agent {
             bound = i;
         }               
 
-        return path.toArray(new Direction[path.size()]);
+        return path.toArray(new Direction[0]);
     }
 
     /* Search utility function */
@@ -49,14 +47,14 @@ public class IDAStarAgent implements Agent {
 
         for (Direction move: board.getLegalMoves()) {
             if (board.getPrevious() != null && move == board.reverseMove(board.getPrevious())) {continue;}
-            ImplicitBoard temp = board.makeMove(move);
+            ImplicitBoard temp = (ImplicitBoard) board.makeMove(move);
             temp.setPreviousMove(move);
             path.add(move);
             int t = search(temp, path, g + 1, bound);
             if (t == -1) {return -1;}
             if (t < min) {min = t;}
             path.pop();
-            board = board.undoMove(move);
+            board = (ImplicitBoard) board.undoMove(move);
         }
 
         return min;
@@ -77,9 +75,5 @@ public class IDAStarAgent implements Agent {
             }
         }
         return cost;
-    }
-
-    public ImplicitBoard getBoard() {
-        return board;
     }
 }

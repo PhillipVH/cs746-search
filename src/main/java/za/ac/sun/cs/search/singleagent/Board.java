@@ -68,14 +68,21 @@ public abstract class Board implements Comparable<Board> {
         ArrayList<Direction> legalMoves = new ArrayList<Direction>();
         short[] emptyPosition = getEmptyTilePosition();
 
-        if (emptyPosition[0] > 0) {legalMoves.add(Direction.UP);}
-        if (emptyPosition[0] < (N-1)) {legalMoves.add(Direction.DOWN);}
-        if (emptyPosition[1] > 0) {legalMoves.add(Direction.LEFT);}
-        if (emptyPosition[1] < (N-1)) {legalMoves.add(Direction.RIGHT);}
+        if (emptyPosition[0] > 0) {
+            legalMoves.add(Direction.UP);
+        }
+        if (emptyPosition[0] < (N - 1)) {
+            legalMoves.add(Direction.DOWN);
+        }
+        if (emptyPosition[1] > 0) {
+            legalMoves.add(Direction.LEFT);
+        }
+        if (emptyPosition[1] < (N - 1)) {
+            legalMoves.add(Direction.RIGHT);
+        }
 
         return legalMoves.toArray(new Direction[legalMoves.size()]);
     }
-
 
 
     public int getCost() {
@@ -137,9 +144,45 @@ public abstract class Board implements Comparable<Board> {
         return outputBuilder.toString();
     }
 
-    public Integer getHeuristicCostEstimate(Board board) {
-        return 1;
+    public Board undoMove(Direction move) {
+
+        switch (move) {
+            case UP:
+                return makeMove(Direction.DOWN);
+            case DOWN:
+                return makeMove(Direction.UP);
+            case LEFT:
+                return makeMove(Direction.RIGHT);
+            case RIGHT:
+                return makeMove(Direction.LEFT);
+            default:
+                return null;
+        }
     }
 
-    public abstract Board makeMove(Direction move);
+    public Board makeMove(Direction move) {
+        short[] emptyPosition = this.getEmptyTilePosition();
+
+        switch (move) {
+            case UP:
+                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
+            case DOWN:
+                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] + 1, emptyPosition[1]);
+            case LEFT:
+                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] - 1);
+            case RIGHT:
+                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
+            default:
+                return null;
+        }
+    }
+
+    public Board swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
+        int tempTile = this.getAt(toRow, toCol);
+        Board temp = new ExplicitBoard(Arrays.copyOf(this.getCurrentState(), this.getCurrentState().length));
+        temp.putAt(toRow, toCol, (short) 0);
+        temp.putAt(fromRow, fromCol, (short) tempTile);
+
+        return temp;
+    }
 }

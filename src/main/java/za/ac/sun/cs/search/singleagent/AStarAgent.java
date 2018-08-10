@@ -15,16 +15,10 @@ public class AStarAgent implements Agent {
         this.goalState = new short[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
     }
 
-    Comparator<ExplicitBoard> explicitBoardComparator = (theBoard, otherBoard) -> {
+    private Comparator<ExplicitBoard> explicitBoardComparator = (theBoard, otherBoard) -> {
         int v = theBoard.getCost() - otherBoard.getCost();
 
-        if (v < 0) {
-            return -1;
-        } else if (v > 0) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return Integer.compare(v, 0);
     };
 
 
@@ -65,9 +59,11 @@ public class AStarAgent implements Agent {
             /* Get all the neighbors. */
             LinkedList<ExplicitBoard> neighbors = board.getNeighbors();
 
-            for (ExplicitBoard neighbor : neighbors) {
-                neighbor.setCostFromStart(board.getCostFromStart() + 1);
+            /* Put this board into the closed set. */
+            openSet.remove(board);
+            closedSet.add(board);
 
+            for (ExplicitBoard neighbor : neighbors) {
                 /* Capture some information about the node. */
                 boolean isOpen = openSet.contains(neighbor);
                 boolean isClosed = closedSet.contains(neighbor);
@@ -98,12 +94,6 @@ public class AStarAgent implements Agent {
 
                 assert neighbor.getCostFromStart() > 0;
             }
-
-
-            openSet.remove(board);
-            closedSet.add(board);
-
-
         }
         return null; // TODO In future this should return Optional.empty().
     }
