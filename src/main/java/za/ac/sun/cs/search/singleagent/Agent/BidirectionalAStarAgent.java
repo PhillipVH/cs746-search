@@ -1,15 +1,18 @@
-package za.ac.sun.cs.search.singleagent;
+package za.ac.sun.cs.search.singleagent.Agent;
+
+import za.ac.sun.cs.search.singleagent.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Board.ExplicitBoard;
 
 import java.util.*;
 
-public class AStarAgent implements Agent {
+public class BidirectionalAStarAgent implements Agent {
     private short[] initialState;
     private short[] goalState;
 
     private ExplicitBoard startBoard;
     private ExplicitBoard goalBoard = new ExplicitBoard(new short[]{0, 1, 2, 3, 4, 5, 6, 7, 8});
 
-    public AStarAgent(short[] configuration) {
+    public BidirectionalAStarAgent(short[] configuration) {
         this.initialState = Arrays.copyOf(configuration, configuration.length);
         this.startBoard = new ExplicitBoard(this.initialState);
         this.goalState = new short[]{0, 1, 2, 3, 4, 5, 6, 7, 8};

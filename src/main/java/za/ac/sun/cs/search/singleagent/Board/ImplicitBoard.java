@@ -1,4 +1,4 @@
-package za.ac.sun.cs.search.singleagent;
+package za.ac.sun.cs.search.singleagent.Board;
 
 public class ImplicitBoard extends Board {
     protected Direction previousMove;

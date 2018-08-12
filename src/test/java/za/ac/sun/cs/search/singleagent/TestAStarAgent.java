@@ -1,6 +1,7 @@
 package za.ac.sun.cs.search.singleagent;
 
 import org.junit.Test;
+import za.ac.sun.cs.search.singleagent.Agent.AStarAgent;
 
 public class TestAStarAgent {
 

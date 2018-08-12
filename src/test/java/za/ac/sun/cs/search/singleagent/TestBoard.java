@@ -2,6 +2,8 @@ package za.ac.sun.cs.search.singleagent;
 
 import org.junit.Before;
 import org.junit.Test;
+import za.ac.sun.cs.search.singleagent.Board.Board;
+import za.ac.sun.cs.search.singleagent.Board.ExplicitBoard;
 
 public class TestBoard {
 

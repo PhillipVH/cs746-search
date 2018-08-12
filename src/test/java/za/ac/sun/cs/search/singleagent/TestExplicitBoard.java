@@ -3,10 +3,12 @@ package za.ac.sun.cs.search.singleagent;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import za.ac.sun.cs.search.singleagent.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Board.ExplicitBoard;
 
 import java.util.*;
 
-import static za.ac.sun.cs.search.singleagent.Direction.*;
+import static za.ac.sun.cs.search.singleagent.Board.Direction.*;
 
 public class TestExplicitBoard {
 
@@ -188,8 +190,6 @@ public class TestExplicitBoard {
         System.out.println(reverse);
 
         Assert.assertTrue(reverse.isTerminal());
-
-
     }
 
 }

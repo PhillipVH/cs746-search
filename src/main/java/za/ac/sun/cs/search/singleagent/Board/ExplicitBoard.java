@@ -1,4 +1,4 @@
-package za.ac.sun.cs.search.singleagent;
+package za.ac.sun.cs.search.singleagent.Board;
 
 import java.util.Arrays;
 import java.util.LinkedList;

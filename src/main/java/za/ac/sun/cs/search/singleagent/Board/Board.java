@@ -1,10 +1,9 @@
-package za.ac.sun.cs.search.singleagent;
+package za.ac.sun.cs.search.singleagent.Board;
 
 import java.lang.Thread;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 
 
 public abstract class Board implements Comparable<Board> {

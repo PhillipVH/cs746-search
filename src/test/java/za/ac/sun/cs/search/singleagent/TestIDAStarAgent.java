@@ -1,6 +1,9 @@
 package za.ac.sun.cs.search.singleagent;
 
 import org.junit.Test;
+import za.ac.sun.cs.search.singleagent.Agent.IDAStarAgent;
+import za.ac.sun.cs.search.singleagent.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Board.ImplicitBoard;
 
 public class TestIDAStarAgent {
 

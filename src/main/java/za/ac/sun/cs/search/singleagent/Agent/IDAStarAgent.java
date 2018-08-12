@@ -1,4 +1,8 @@
-package za.ac.sun.cs.search.singleagent;
+package za.ac.sun.cs.search.singleagent.Agent;
+
+import za.ac.sun.cs.search.singleagent.Board.Board;
+import za.ac.sun.cs.search.singleagent.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Board.ImplicitBoard;
 
 import java.util.Stack;
 
