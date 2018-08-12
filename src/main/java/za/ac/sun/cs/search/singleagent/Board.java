@@ -24,6 +24,8 @@ public abstract class Board implements Comparable<Board> {
         /* We are working under the assumption that N-puzzle boards are always square. */
         N = (int) Math.sqrt(initialState.length);
 
+        assert Math.pow(N, 2) == initialState.length;
+
         /* Initialize the current state. */
         currentState = new short[initialState.length];
 
@@ -38,6 +40,38 @@ public abstract class Board implements Comparable<Board> {
             goalState[i] = i;
         }
         currentState = initialState;
+    }
+
+    /**
+     * Initializes the internal state of the board. Unlike the single argument ctor, this ctor expects
+     * an explicit goal state. This is mostly useful for bidirectional searches, as the backward searches
+     * don't have the classic goal state.
+     *
+     * @param initialState The starting state of the board.
+     * @param goalState The (explicit) goal state.
+     */
+    public Board(short[] initialState, short[] goalState) {
+
+        /* Do a bit of a sanity check on the lengths of the inputs. */
+        assert initialState.length == goalState.length;
+
+        /* We are working under the assumption that N-puzzle boards are always square. */
+        N = (int) Math.sqrt(initialState.length);
+
+        assert Math.pow(N, 2) == initialState.length;
+
+        /* Initialize the current state. */
+        currentState = new short[initialState.length];
+
+        /* Load the initial state into this Board instance. */
+        for (short i = 0; i < initialState.length; i++) {
+            currentState[i] = initialState[i];
+        }
+        currentState = initialState;
+
+        /* Copy in the goal state. */
+        this.goalState = Arrays.copyOf(goalState, goalState.length);
+
     }
 
     public int compareTo(Board other) {
@@ -144,6 +178,11 @@ public abstract class Board implements Comparable<Board> {
         return outputBuilder.toString();
     }
 
+    /**
+     * Takes a move and returns a new board with that move undone.
+     * @param move The move to undo
+     * @return The new board
+     */
     public Board undoMove(Direction move) {
 
         switch (move) {
@@ -160,6 +199,11 @@ public abstract class Board implements Comparable<Board> {
         }
     }
 
+    /**
+     * Takes a move and returns a new board with that move applied.
+     * @param move The move to apply
+     * @return The new board
+     */
     public Board makeMove(Direction move) {
         short[] emptyPosition = this.getEmptyTilePosition();
 
@@ -177,9 +221,17 @@ public abstract class Board implements Comparable<Board> {
         }
     }
 
+    /**
+     * Swap two tiles on the N-puzzle board.
+     * @param fromRow
+     * @param fromCol
+     * @param toRow
+     * @param toCol
+     * @return A new board with the tiles from the specified lines and columns swapped around.
+     */
     public Board swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
         int tempTile = this.getAt(toRow, toCol);
-        Board temp = new ExplicitBoard(Arrays.copyOf(this.getCurrentState(), this.getCurrentState().length));
+        Board temp = new ExplicitBoard(Arrays.copyOf(this.getCurrentState(), this.getCurrentState().length), this.goalState);
         temp.putAt(toRow, toCol, (short) 0);
         temp.putAt(fromRow, fromCol, (short) tempTile);
 

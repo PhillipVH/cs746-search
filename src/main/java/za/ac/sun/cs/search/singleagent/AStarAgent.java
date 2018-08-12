@@ -68,9 +68,6 @@ public class AStarAgent implements Agent {
                 boolean isOpen = openSet.contains(neighbor);
                 boolean isClosed = closedSet.contains(neighbor);
 
-                /* Give these guys a daddy. */
-                neighbor.setParent(board);
-
                 /* Ignore nodes in the closed list. */
                 if (isClosed) {
                     continue;

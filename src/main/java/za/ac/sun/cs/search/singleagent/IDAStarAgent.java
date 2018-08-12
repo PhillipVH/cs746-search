@@ -38,7 +38,7 @@ public class IDAStarAgent implements Agent {
 
     /* Search utility function */
 
-    public int search(ImplicitBoard board, Stack<Direction> path, int g, int bound) {     
+    public int search(ImplicitBoard board, Stack<Direction> path, int g, int bound) {
         int f = g + getHeuristicCostEstimate(board);
         if (f > bound) {return f;}
         if (board.isTerminal()) {return -1;}

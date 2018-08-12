@@ -14,4 +14,22 @@ public class TestAStarAgent {
 
         aStarAgent.solve();
     }
+
+    @Test
+    public void smallTest() {
+        short configuration[] = {3, 2, 1, 0};
+
+        AStarAgent aStarAgent = new AStarAgent(configuration);
+
+        aStarAgent.solve();
+    }
+
+    @Test
+    public void hard8Puzzle() {
+        short configuration[] = {8, 6, 7, 2, 5, 4, 3, 0, 1};
+
+        AStarAgent aStarAgent = new AStarAgent(configuration);
+
+        aStarAgent.solve();
+    }
 }
