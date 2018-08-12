@@ -5,6 +5,8 @@ import za.ac.sun.cs.search.singleagent.Board.ExplicitBoard;
 
 import java.util.*;
 
+import static za.ac.sun.cs.search.singleagent.Board.Direction.*;
+
 public class AStarAgent implements Agent {
     private short[] initialState;
     private short[] goalState;
@@ -98,21 +100,62 @@ public class AStarAgent implements Agent {
         return null; // TODO In future this should return Optional.empty().
     }
 
+    /**
+     * Reconstruct the path from the source vertex to the target vertex.
+     *
+     * @param board The terminal node, as determined by A*.
+     * @return An array of moves that when applied on the starting board, leads to the
+     * terminal board.
+     */
     private Direction[] constructPath(ExplicitBoard board) {
-        LinkedList<ExplicitBoard> path = new LinkedList<>();
+        List<Direction> solution = new LinkedList<>();
+
         System.out.println(board);
 
-        int i = 0;
         while (board.getParent() != null) {
-            i++;
-            path.addFirst(board);
-            board = board.getParent();
-            System.out.println(board.toString());
+
+            /* Grab a reference to the next state. */
+            ExplicitBoard nextBoard = board.getParent();
+            System.out.println(nextBoard);
+
+            /* Find the move responsible for the transition. */
+            Direction move = testMove(board, nextBoard);
+
+            /* Add the solution to the move. */
+            solution.add(move);
+
+            /* One step up in the chain. */
+            board = nextBoard;
         }
-        System.out.println("Move :" + i);
 
+        /* Reverse the linked list so we get the solution from the front to the back. */
+        Collections.reverse(solution);
 
+        return solution.toArray(new Direction[solution.size()]);
+    }
+
+    /**
+     * Determine which move caused the new board to be generated from the original.
+     *
+     * @param original  The original board
+     * @param nextBoard The board after the move has been applied
+     * @return The move responsible for the transformation.
+     */
+    private Direction testMove(ExplicitBoard original, ExplicitBoard nextBoard) {
+
+        Direction[] possibleMoves = new Direction[] {UP, LEFT, DOWN, RIGHT};
+
+        for (Direction move : possibleMoves) {
+            try {
+                if (nextBoard.makeMove(move).equals(original)) {
+                    return move;
+                }
+            } catch (ArrayIndexOutOfBoundsException e) {
+                /* Not this move. */
+            }
+        }
         return null;
+
     }
 
 

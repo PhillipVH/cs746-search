@@ -2,18 +2,22 @@ package za.ac.sun.cs.search.singleagent;
 
 import org.junit.Test;
 import za.ac.sun.cs.search.singleagent.Agent.AStarAgent;
+import za.ac.sun.cs.search.singleagent.Board.Direction;
+
+import java.util.Arrays;
 
 public class TestAStarAgent {
 
     @Test
     public void smokeTest() {
-        /* TODO Will probably be passed in as an argument. */
         short configuration[] = {8, 7, 5, 3, 0, 1, 4, 2, 6};
-//        short configuration[] = {1, 0, 2, 3, 4, 5, 6, 7, 8};
 
         AStarAgent aStarAgent = new AStarAgent(configuration);
 
-        aStarAgent.solve();
+        Direction[] solution = aStarAgent.solve();
+
+        System.out.println(Arrays.toString(solution));
+        System.out.println("Solution Cost: " + solution.length);
     }
 
     @Test
@@ -22,7 +26,10 @@ public class TestAStarAgent {
 
         AStarAgent aStarAgent = new AStarAgent(configuration);
 
-        aStarAgent.solve();
+        Direction[] solution = aStarAgent.solve();
+
+        System.out.println(Arrays.toString(solution));
+        System.out.println("Solution Cost: " + solution.length);
     }
 
     @Test
@@ -31,6 +38,9 @@ public class TestAStarAgent {
 
         AStarAgent aStarAgent = new AStarAgent(configuration);
 
-        aStarAgent.solve();
+        Direction[] solution = aStarAgent.solve();
+
+        System.out.println(Arrays.toString(solution));
+        System.out.println("Solution Cost: " + solution.length);
     }
 }
