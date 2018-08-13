@@ -14,7 +14,7 @@ public class TestBidirectionalAStarAgent {
     public void smokeTest() {
         short configuration[] = {8, 7, 5, 3, 0, 1, 4, 2, 6};
 
-        BidirectionalAStarAgent bidirectionalAStarAgent = new BidirectionalAStarAgent(configuration);
+        BidirectionalAStarAgent bidirectionalAStarAgent = new BidirectionalAStarAgent(configuration, true);
 
         Direction[] solution = bidirectionalAStarAgent.solve();
 
@@ -28,7 +28,7 @@ public class TestBidirectionalAStarAgent {
     public void smallTest() {
         short configuration[] = {3, 2, 1, 0};
 
-        BidirectionalAStarAgent bidirectionalAStarAgent = new BidirectionalAStarAgent(configuration);
+        BidirectionalAStarAgent bidirectionalAStarAgent = new BidirectionalAStarAgent(configuration, true);
 
         Direction[] solution = bidirectionalAStarAgent.solve();
 
@@ -42,7 +42,7 @@ public class TestBidirectionalAStarAgent {
     public void hard8Puzzle() {
         short configuration[] = {8, 6, 7, 2, 5, 4, 3, 0, 1};
 
-        BidirectionalAStarAgent bidirectionalAStarAgent = new BidirectionalAStarAgent(configuration);
+        BidirectionalAStarAgent bidirectionalAStarAgent = new BidirectionalAStarAgent(configuration, true);
 
         Direction[] solution = bidirectionalAStarAgent.solve();
 
