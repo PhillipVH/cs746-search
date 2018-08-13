@@ -104,7 +104,7 @@ public class BidirectionalAStarAgent implements Agent {
                 }
 
                 /* Trace the ancestry of the two boards and return a nicely patched solution. */
-                List<ExplicitBoard> solution = mergePaths(board, boardBackward, true);
+                mergePaths(board, boardBackward, true);
 
                 /* If we allow suboptimal solutions, return now if possible. */
                 if (this.uPath != null && this.allowUnoptimalSolution) {
@@ -130,7 +130,7 @@ public class BidirectionalAStarAgent implements Agent {
                 }
 
                 /* Trace the ancestry of the two boards and return a nicely patched solution. */
-                List<ExplicitBoard> solution = mergePaths(boardForward, board, true);
+                mergePaths(boardForward, board, true);
 
                 /* If we allow suboptimal solutions, return now if possible. */
                 if (this.uPath != null && this.allowUnoptimalSolution) {
@@ -190,9 +190,7 @@ public class BidirectionalAStarAgent implements Agent {
             if (forward) {
                 openSetRef = openSetBackward;
                 closedSetRef = closedSetBackward;
-                System.out.println("Forward search");
             } else {
-                System.out.println("Backward search");
                 openSetRef = openSetForward;
                 closedSetRef = closedSetForward;
             }
