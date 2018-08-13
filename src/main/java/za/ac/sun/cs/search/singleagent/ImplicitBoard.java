@@ -2,23 +2,16 @@ package za.ac.sun.cs.search.singleagent;
 
 public class ImplicitBoard extends Board {
     protected Direction previousMove;
+
     /**
      * Initialize the internal state of the board and calculate the size of it.
      *
-     * @param initialState An array of the initial tile configuration, as read from left to right and top to bottom.
+     * @param initialState An array of the initial tile configuration, as read from
+     *                     left to right and top to bottom.
      */
     public ImplicitBoard(short[] initialState) {
         super(initialState);
         this.previousMove = null;
-    }
-
-    public ImplicitBoard swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
-        int tempTile = this.getAt(toRow, toCol);
-        ImplicitBoard temp = new ImplicitBoard(this.getCurrentState());
-        temp.putAt(toRow, toCol, (short) 0);
-        temp.putAt(fromRow, fromCol, (short) tempTile);
-
-        return temp;
     }
 
     public Direction reverseMove(Direction move) {
@@ -36,37 +29,51 @@ public class ImplicitBoard extends Board {
         }
     }
 
-    public ImplicitBoard makeMove(Direction move) {
-        short[] emptyPosition = this.getEmptyTilePosition();
-
+    public void makeMove(Direction move) {
+        short[] emptyPosition = this.getEmptyTilePosition();        
         switch (move) {
             case UP:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
+                swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
+                break;
             case DOWN:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] + 1, emptyPosition[1]);
+                swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] + 1, emptyPosition[1]);
+                break;
             case LEFT:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] - 1);
+                swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] - 1);
+                break;
             case RIGHT:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
+                swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
+                break;
             default:
-                return null;
+                break;
         }
     }
 
-    public ImplicitBoard undoMove(Direction move) {
-
+    public void undoMove(Direction move) {
         switch (move) {
             case UP:
-                return makeMove(Direction.DOWN);
+                makeMove(Direction.DOWN);
+                break;
             case DOWN:
-                return makeMove(Direction.UP);
+                makeMove(Direction.UP);
+                break;
             case LEFT:
-                return makeMove(Direction.RIGHT);
+                makeMove(Direction.RIGHT);
+                break;
             case RIGHT:
-                return makeMove(Direction.LEFT);
+                makeMove(Direction.LEFT);
+                break;
             default:
-                return null;
+                return;
         }
+    }
+
+    public void swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
+        int tempTile = this.getAt(toRow, toCol);
+        this.putAt(toRow, toCol, (short) 0);
+        this.putAt(fromRow, fromCol, (short) tempTile);
+
+        return;
     }
 
     public Direction getPrevious() {
@@ -75,5 +82,17 @@ public class ImplicitBoard extends Board {
 
     public void setPreviousMove(Direction move) {
         this.previousMove = move;
+    }
+
+    public void visualizePath(Direction[] path) throws Exception {
+        System.out.println("Initial Board:");
+        System.out.println(this);
+        for (Direction move : path) {
+            System.out.println("Move: " + move);
+            this.makeMove(move);
+            System.out.println(this);
+            Thread.sleep(500);
+
+        }
     }
 }
