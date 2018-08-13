@@ -208,6 +208,23 @@ public class BidirectionalAStarAgent implements Agent {
 
         }
 
+        /* Reverse the path to get the terminal node on top. */
+        Collections.reverse(sourceToTarget);
+
+        /* Create the new root board. */
+        ExplicitBoard solutionBoard = new ExplicitBoard(sourceToTarget.get(0).getCurrentState());
+        solutionBoard.setCostFromStart(sourceToTarget.size());
+
+        ExplicitBoard solutionBoardRef = solutionBoard;
+
+        /* Step through each element in the list and set up the parental chain. */
+        for (ExplicitBoard board : sourceToTarget.subList(1, sourceToTarget.size() - 1)) {
+            solutionBoardRef.setParent(board);
+            solutionBoardRef = solutionBoardRef.getParent();
+        }
+
+        System.out.println(solutionBoard);
+
         return sourceToTarget;
     }
 
