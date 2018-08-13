@@ -117,6 +117,7 @@ public class ExplicitBoard extends Board {
             /* This board is the parent of the neighbor. */
             neighbor.setParent(this);
 
+            /* It cost one move to get to this neighbor, so set the cost from the start appropriately. */
             neighbor.setCostFromStart(this.costFromStart + 1);
             neighbors.add(neighbor);
         }

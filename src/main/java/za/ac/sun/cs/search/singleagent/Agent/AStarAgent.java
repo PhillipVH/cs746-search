@@ -9,15 +9,12 @@ import static za.ac.sun.cs.search.singleagent.Board.Direction.*;
 
 public class AStarAgent implements Agent {
     private short[] initialState;
-    private short[] goalState;
 
     private ExplicitBoard startBoard;
-    private ExplicitBoard goalBoard = new ExplicitBoard(new short[]{0, 1, 2, 3, 4, 5, 6, 7, 8});
 
     public AStarAgent(short[] configuration) {
         this.initialState = Arrays.copyOf(configuration, configuration.length);
         this.startBoard = new ExplicitBoard(this.initialState);
-        this.goalState = new short[]{0, 1, 2, 3, 4, 5, 6, 7, 8};
     }
 
     private Comparator<ExplicitBoard> explicitBoardComparator = (theBoard, otherBoard) -> {
@@ -47,6 +44,9 @@ public class AStarAgent implements Agent {
 
         openSet.add(startBoard);
 
+        /* A counter to keep track of the number of nodes explored. */
+        long exploredNodes = 0L;
+
         /* While there is still world to explore, explore it! */
         while (!openSet.isEmpty()) {
 
@@ -58,11 +58,14 @@ public class AStarAgent implements Agent {
 
             /* If this node is terminal, we have found the solution. */
             if (board.isTerminal()) {
+                System.out.println("Nodes Explored: " + exploredNodes);
                 return constructPath(board);
             }
 
             /* Get all the neighbors. */
             LinkedList<ExplicitBoard> neighbors = board.getNeighbors();
+
+            exploredNodes += neighbors.size();
 
             /* Put this board into the closed set. */
             openSet.remove(board);
