@@ -124,6 +124,8 @@ public abstract class Board implements Comparable<Board> {
 
         }
     }
+    
+    public abstract Board makeMove(Direction move);
 
     @Override
     public String toString() {
@@ -142,47 +144,5 @@ public abstract class Board implements Comparable<Board> {
         }
 
         return outputBuilder.toString();
-    }
-
-    public Board undoMove(Direction move) {
-
-        switch (move) {
-            case UP:
-                return makeMove(Direction.DOWN);
-            case DOWN:
-                return makeMove(Direction.UP);
-            case LEFT:
-                return makeMove(Direction.RIGHT);
-            case RIGHT:
-                return makeMove(Direction.LEFT);
-            default:
-                return null;
-        }
-    }
-
-    public Board makeMove(Direction move) {
-        short[] emptyPosition = this.getEmptyTilePosition();
-
-        switch (move) {
-            case UP:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
-            case DOWN:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] + 1, emptyPosition[1]);
-            case LEFT:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] - 1);
-            case RIGHT:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
-            default:
-                return null;
-        }
-    }
-
-    public Board swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
-        int tempTile = this.getAt(toRow, toCol);
-        Board temp = new ExplicitBoard(Arrays.copyOf(this.getCurrentState(), this.getCurrentState().length));
-        temp.putAt(toRow, toCol, (short) 0);
-        temp.putAt(fromRow, fromCol, (short) tempTile);
-
-        return temp;
     }
 }
