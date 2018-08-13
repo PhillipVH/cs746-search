@@ -133,6 +133,18 @@ public class ExplicitBoard extends Board {
         return temp;
     }
 
+    public void visualizePath(Direction[] path) throws Exception {
+        System.out.println("Initial Board:");
+        System.out.println(this);
+        for (Direction move : path) {
+            System.out.println("Move: " + move);
+            this.makeMove(move);
+            System.out.println(this);
+            Thread.sleep(500);
+
+        }
+    }
+
     @Override
     public int hashCode() {
         return Arrays.hashCode(this.currentState);

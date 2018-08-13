@@ -37,7 +37,6 @@ public abstract class Board implements Comparable<Board> {
             /* Setup the goal state */
             goalState[i] = i;
         }
-        currentState = initialState;
     }
 
     public int compareTo(Board other) {
@@ -112,20 +111,6 @@ public abstract class Board implements Comparable<Board> {
     public boolean isTerminal() {
         return Arrays.equals(currentState, goalState);
     }
-
-    public void visualizePath(Direction[] path) throws Exception {
-        System.out.println("Initial Board:");
-        System.out.println(this);
-        for (Direction move : path) {
-            System.out.println("Move: " + move);
-            this.makeMove(move);
-            System.out.println(this);
-            Thread.sleep(500);
-
-        }
-    }
-    
-    public abstract Board makeMove(Direction move);
 
     @Override
     public String toString() {
