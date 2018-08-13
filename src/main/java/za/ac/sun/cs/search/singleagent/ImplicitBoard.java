@@ -16,16 +16,16 @@ public class ImplicitBoard extends Board {
 
     public Direction reverseMove(Direction move) {
         switch (move) {
-        case UP:
-            return Direction.DOWN;
-        case DOWN:
-            return Direction.UP;
-        case LEFT:
-            return Direction.RIGHT;
-        case RIGHT:
-            return Direction.LEFT;
-        default:
-            return null;
+            case UP:
+                return Direction.DOWN;
+            case DOWN:
+                return Direction.UP;
+            case LEFT:
+                return Direction.RIGHT;
+            case RIGHT:
+                return Direction.LEFT;
+            default:
+                return null;
         }
     }
 

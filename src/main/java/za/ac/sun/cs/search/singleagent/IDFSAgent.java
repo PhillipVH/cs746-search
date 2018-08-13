@@ -41,7 +41,7 @@ public class IDFSAgent implements Agent {
             depth++;
         }
 
-        return path.toArray(new Direction[path.size()]);
+        return path.toArray(new Direction[0]);
     }
 
     /* Search utility function */
@@ -66,11 +66,8 @@ public class IDFSAgent implements Agent {
                 board.makeMove(move);
                 board.setPreviousMove(move);
                 dfs(board, depth - 1, path, result);
-                if (result.getFound()) {
-                    return;
-                } else {
-                    result.setRemaining(true);
-                }
+                if (result.getFound()) {return;}
+                else {result.setRemaining(true);}
 
                 board.undoMove(path.pop());
                 board.setPreviousMove(previousMove);
