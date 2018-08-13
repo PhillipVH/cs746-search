@@ -63,7 +63,6 @@ public class IDFSAgent implements Agent {
                     continue;
                 }
                 path.add(move);
-                //ImplicitBoard temp = new ImplicitBoard(Arrays.copyOf(board.getCurrentState(), board.getCurrentState().length));
                 board.makeMove(move);
                 board.setPreviousMove(move);
                 dfs(board, depth - 1, path, result);

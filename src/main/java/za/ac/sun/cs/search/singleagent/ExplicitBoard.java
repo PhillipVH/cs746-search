@@ -20,8 +20,13 @@ public class ExplicitBoard extends Board {
         this.parent = null;
     }
 
-    private int getHeuristicCostEstimateRaw() {
-        /* Misplaced Tiles Heuristic */
+    /**
+     * Count the number of tiles not in their final position (excluding the blank tile).
+     *
+     * An admissible, inconsistent heuristic.
+     * @return The number of misplaced tiles
+     */
+    public int getHeuristicCostEstimateRaw() {
         int cost = 0;
 
         int idx = 0;
@@ -36,37 +41,11 @@ public class ExplicitBoard extends Board {
                 if (this.getAt(i, j) != goalState[idx++]) {
                     cost += 1;
                 }
+
             }
         }
 
         return cost;
-    }
-
-    @Override
-    public ExplicitBoard makeMove(Direction move) {
-        short[] emptyPosition = this.getEmptyTilePosition();
-
-        switch (move) {
-            case UP:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
-            case DOWN:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] + 1, emptyPosition[1]);
-            case LEFT:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] - 1);
-            case RIGHT:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
-            default:
-                return null;
-        }
-    }
-
-    public ExplicitBoard swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
-        int tempTile = this.getAt(toRow, toCol);
-        ExplicitBoard temp = new ExplicitBoard(Arrays.copyOf(this.getCurrentState(), this.getCurrentState().length));
-        temp.putAt(toRow, toCol, (short) 0);
-        temp.putAt(fromRow, fromCol, (short) tempTile);
-
-        return temp;
     }
 
     @Override
@@ -126,6 +105,44 @@ public class ExplicitBoard extends Board {
         }
 
         return neighbors;
+    }
+
+    public ExplicitBoard makeMove(Direction move) {
+        short[] emptyPosition = this.getEmptyTilePosition();
+
+        switch (move) {
+            case UP:
+                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
+            case DOWN:
+                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] + 1, emptyPosition[1]);
+            case LEFT:
+                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] - 1);
+            case RIGHT:
+                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
+            default:
+                return null;
+        }
+    }
+
+    public ExplicitBoard swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
+        int tempTile = this.getAt(toRow, toCol);
+        ExplicitBoard temp = new ExplicitBoard(Arrays.copyOf(this.getCurrentState(), this.getCurrentState().length));
+        temp.putAt(toRow, toCol, (short) 0);
+        temp.putAt(fromRow, fromCol, (short) tempTile);
+
+        return temp;
+    }
+
+    public void visualizePath(Direction[] path) throws Exception {
+        System.out.println("Initial Board:");
+        System.out.println(this);
+        for (Direction move : path) {
+            System.out.println("Move: " + move);
+            this.makeMove(move);
+            System.out.println(this);
+            Thread.sleep(500);
+
+        }
     }
 
     @Override

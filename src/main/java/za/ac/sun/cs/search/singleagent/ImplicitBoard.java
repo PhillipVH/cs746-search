@@ -1,24 +1,36 @@
 package za.ac.sun.cs.search.singleagent;
 
-import java.util.LinkedList;
-
-
 public class ImplicitBoard extends Board {
     protected Direction previousMove;
+
     /**
      * Initialize the internal state of the board and calculate the size of it.
      *
-     * @param initialState An array of the initial tile configuration, as read from left to right and top to bottom.
+     * @param initialState An array of the initial tile configuration, as read from
+     *                     left to right and top to bottom.
      */
     public ImplicitBoard(short[] initialState) {
         super(initialState);
         this.previousMove = null;
     }
 
-    @Override
-    public ImplicitBoard makeMove(Direction move) {
-        short[] emptyPosition = this.getEmptyTilePosition();
-        
+    public Direction reverseMove(Direction move) {
+        switch (move) {
+        case UP:
+            return Direction.DOWN;
+        case DOWN:
+            return Direction.UP;
+        case LEFT:
+            return Direction.RIGHT;
+        case RIGHT:
+            return Direction.LEFT;
+        default:
+            return null;
+        }
+    }
+
+    public void makeMove(Direction move) {
+        short[] emptyPosition = this.getEmptyTilePosition();        
         switch (move) {
             case UP:
                 swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
@@ -33,14 +45,11 @@ public class ImplicitBoard extends Board {
                 swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
                 break;
             default:
-                return null;
+                break;
         }
-
-        return null;
     }
 
     public void undoMove(Direction move) {
-
         switch (move) {
             case UP:
                 makeMove(Direction.DOWN);
@@ -67,28 +76,23 @@ public class ImplicitBoard extends Board {
         return;
     }
 
-    public Direction reverseMove(Direction move) {
-        switch (move) {
-            case UP:
-                return Direction.DOWN;
-            case DOWN:
-                return Direction.UP;
-            case LEFT:
-                return Direction.RIGHT;
-            case RIGHT:
-                return Direction.LEFT;
-            default:
-                return null;
-        }
-    }
-
-
-
     public Direction getPrevious() {
         return previousMove;
     }
 
     public void setPreviousMove(Direction move) {
         this.previousMove = move;
+    }
+
+    public void visualizePath(Direction[] path) throws Exception {
+        System.out.println("Initial Board:");
+        System.out.println(this);
+        for (Direction move : path) {
+            System.out.println("Move: " + move);
+            this.makeMove(move);
+            System.out.println(this);
+            Thread.sleep(500);
+
+        }
     }
 }

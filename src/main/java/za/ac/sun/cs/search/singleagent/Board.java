@@ -67,14 +67,21 @@ public abstract class Board implements Comparable<Board> {
         ArrayList<Direction> legalMoves = new ArrayList<Direction>();
         short[] emptyPosition = getEmptyTilePosition();
 
-        if (emptyPosition[0] > 0) {legalMoves.add(Direction.UP);}
-        if (emptyPosition[0] < (N-1)) {legalMoves.add(Direction.DOWN);}
-        if (emptyPosition[1] > 0) {legalMoves.add(Direction.LEFT);}
-        if (emptyPosition[1] < (N-1)) {legalMoves.add(Direction.RIGHT);}
+        if (emptyPosition[0] > 0) {
+            legalMoves.add(Direction.UP);
+        }
+        if (emptyPosition[0] < (N - 1)) {
+            legalMoves.add(Direction.DOWN);
+        }
+        if (emptyPosition[1] > 0) {
+            legalMoves.add(Direction.LEFT);
+        }
+        if (emptyPosition[1] < (N - 1)) {
+            legalMoves.add(Direction.RIGHT);
+        }
 
         return legalMoves.toArray(new Direction[legalMoves.size()]);
     }
-
 
 
     public int getCost() {
@@ -105,18 +112,6 @@ public abstract class Board implements Comparable<Board> {
         return Arrays.equals(currentState, goalState);
     }
 
-    public void visualizePath(Direction[] path) throws Exception {
-        System.out.println("Initial Board:");
-        System.out.println(this);
-        for (Direction move : path) {
-            System.out.println("Move: " + move);
-            this.makeMove(move);
-            System.out.println(this);
-            Thread.sleep(500);
-
-        }
-    }
-
     @Override
     public String toString() {
         StringBuilder outputBuilder = new StringBuilder();
@@ -135,10 +130,4 @@ public abstract class Board implements Comparable<Board> {
 
         return outputBuilder.toString();
     }
-
-    public Integer getHeuristicCostEstimate(Board board) {
-        return 1;
-    }
-
-    public abstract Board makeMove(Direction move);
 }

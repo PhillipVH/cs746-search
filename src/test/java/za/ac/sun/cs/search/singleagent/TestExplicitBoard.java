@@ -51,7 +51,7 @@ public class TestExplicitBoard {
         System.out.println("[original] Before swap");
         System.out.println(board.toString());
 
-        ExplicitBoard newBoard = board.swapTiles(1, 1, 1, 2);
+        ExplicitBoard newBoard = (ExplicitBoard) board.swapTiles(1, 1, 1, 2);
         System.out.println("[original] After swap");
         System.out.println(board.toString());
 
@@ -70,7 +70,7 @@ public class TestExplicitBoard {
 
     @Test
     public void testMakeMove() {
-        ExplicitBoard newBoard = board.makeMove(Direction.UP);
+        ExplicitBoard newBoard = (ExplicitBoard) board.makeMove(Direction.UP);
 
         /* Make sure the move was applied. */
         Assert.assertNotEquals(newBoard, board);
@@ -142,10 +142,10 @@ public class TestExplicitBoard {
         Assert.assertTrue(terminalBoard.isTerminal());
 
         /* The terminal board has a heuristic cost of zero. */
-        Assert.assertEquals(0, terminalBoard.getEstimatedCost());
+        Assert.assertEquals(0, terminalBoard.getHeuristicCostEstimateRaw());
 
         /* The non-terminal board used as an example should have a score of 7 (we don't count the blank tile. */
-        Assert.assertEquals(7, board.getEstimatedCost());
+        Assert.assertEquals(7, board.getHeuristicCostEstimateRaw());
     }
 
     @Test
