@@ -1,5 +1,9 @@
 package za.ac.sun.cs.search.singleagent;
 
+import za.ac.sun.cs.search.singleagent.Agent.Agent;
+import za.ac.sun.cs.search.singleagent.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Board.ImplicitBoard;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;

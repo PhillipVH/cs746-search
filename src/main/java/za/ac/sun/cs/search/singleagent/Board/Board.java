@@ -1,10 +1,9 @@
-package za.ac.sun.cs.search.singleagent;
+package za.ac.sun.cs.search.singleagent.Board;
 
 import java.lang.Thread;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 
 
 public abstract class Board implements Comparable<Board> {
@@ -24,6 +23,8 @@ public abstract class Board implements Comparable<Board> {
         /* We are working under the assumption that N-puzzle boards are always square. */
         N = (int) Math.sqrt(initialState.length);
 
+        assert Math.pow(N, 2) == initialState.length;
+
         /* Initialize the current state. */
         currentState = new short[initialState.length];
 
@@ -37,6 +38,38 @@ public abstract class Board implements Comparable<Board> {
             /* Setup the goal state */
             goalState[i] = i;
         }
+    }
+
+    /**
+     * Initializes the internal state of the board. Unlike the single argument ctor, this ctor expects
+     * an explicit goal state. This is mostly useful for bidirectional searches, as the backward searches
+     * don't have the classic goal state.
+     *
+     * @param initialState The starting state of the board.
+     * @param goalState The (explicit) goal state.
+     */
+    public Board(short[] initialState, short[] goalState) {
+
+        /* Do a bit of a sanity check on the lengths of the inputs. */
+        assert initialState.length == goalState.length;
+
+        /* We are working under the assumption that N-puzzle boards are always square. */
+        N = (int) Math.sqrt(initialState.length);
+
+        assert Math.pow(N, 2) == initialState.length;
+
+        /* Initialize the current state. */
+        currentState = new short[initialState.length];
+
+        /* Load the initial state into this Board instance. */
+        for (short i = 0; i < initialState.length; i++) {
+            currentState[i] = initialState[i];
+        }
+        currentState = initialState;
+
+        /* Copy in the goal state. */
+        this.goalState = Arrays.copyOf(goalState, goalState.length);
+
     }
 
     public int compareTo(Board other) {

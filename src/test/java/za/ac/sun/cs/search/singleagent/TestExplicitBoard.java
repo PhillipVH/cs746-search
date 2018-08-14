@@ -3,11 +3,12 @@ package za.ac.sun.cs.search.singleagent;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import za.ac.sun.cs.search.singleagent.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Board.ExplicitBoard;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
+import java.util.*;
+
+import static za.ac.sun.cs.search.singleagent.Board.Direction.*;
 
 public class TestExplicitBoard {
 
@@ -70,7 +71,7 @@ public class TestExplicitBoard {
 
     @Test
     public void testMakeMove() {
-        ExplicitBoard newBoard = (ExplicitBoard) board.makeMove(Direction.UP);
+        ExplicitBoard newBoard = (ExplicitBoard) board.makeMove(UP);
 
         /* Make sure the move was applied. */
         Assert.assertNotEquals(newBoard, board);
@@ -155,6 +156,40 @@ public class TestExplicitBoard {
         set.add(board);
 
         Assert.assertTrue(set.contains(board));
+    }
+
+    @Test
+    public void testIncreasingCostBug() {
+        board.setCostFromStart(1);
+
+        Assert.assertEquals(8, board.getCost());
+
+        board.setCostFromStart(0);
+
+        Assert.assertEquals(7, board.getCost());
+    }
+
+    @Test
+    public void testExplicitGoalState() {
+        short[] configuration = {0, 1, 2, 3};
+        short[] goal = {3, 2, 1, 0};
+
+        ExplicitBoard reverse = new ExplicitBoard(configuration, goal);
+
+        /* Even though the board starts in a traditional start state, it should not be flagged as a terminal node. */
+        Assert.assertFalse(reverse.isTerminal());
+
+        /* The shortest solution to this as determined by AStarAgent. */
+        Direction[] solution = new Direction[] {RIGHT, DOWN, LEFT, UP, RIGHT, DOWN};
+
+        /* Apply the moves in and confirm the board is now in our defined goal state. */
+        for (Direction move : solution) {
+            reverse = reverse.makeMove(move);
+        }
+
+        System.out.println(reverse);
+
+        Assert.assertTrue(reverse.isTerminal());
     }
 
 }
