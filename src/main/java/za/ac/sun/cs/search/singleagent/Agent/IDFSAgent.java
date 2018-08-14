@@ -1,12 +1,8 @@
-package za.ac.sun.cs.search.singleagent;
+package za.ac.sun.cs.search.singleagent.Agent;
 
-import za.ac.sun.cs.search.singleagent.Agent.Agent;
 import za.ac.sun.cs.search.singleagent.Board.Direction;
 import za.ac.sun.cs.search.singleagent.Board.ImplicitBoard;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Stack;
 
 public class IDFSAgent implements Agent {
@@ -29,12 +25,12 @@ public class IDFSAgent implements Agent {
      */
     @Override
     public Direction[] solve() {
-        Stack<Direction> path = new Stack<Direction>();
+        Stack<Direction> path = new Stack<>();
         DFSResult result = new DFSResult();
         int depth = 4;
 
         while (!result.getFound()) {
-            path = new Stack<Direction>();
+            path = new Stack<>();
             dfs(board, depth, path, result);
             if (result.getFound()) {
                 result.setFound(true);
