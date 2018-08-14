@@ -3,6 +3,8 @@ package za.ac.sun.cs.search.singleagent.Agent;
 import za.ac.sun.cs.search.singleagent.Board.Board;
 import za.ac.sun.cs.search.singleagent.Board.Direction;
 import za.ac.sun.cs.search.singleagent.Board.ImplicitBoard;
+import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
+
 
 import java.util.Stack;
 
@@ -10,11 +12,13 @@ public class IDAStarAgent implements Agent {
     private short[] initialState;
     private short[] goalState;
     private ImplicitBoard board;
+    private Heuristic heuristic;
 
-    public IDAStarAgent(short[] configuration) {
+    public IDAStarAgent(short[] configuration, Heuristic heuristic) {
         this.initialState = configuration;
         this.board = new ImplicitBoard(initialState);
         this.goalState = this.board.getGoalState();
+        this.heuristic = heuristic;
 
     }
 
@@ -27,7 +31,7 @@ public class IDAStarAgent implements Agent {
     @Override
     public Direction[] solve() {
         Stack<Direction> path = new Stack<>();
-        int bound = getHeuristicCostEstimate(board);
+        int bound = heuristic.getHeuristicCostEstimate(board);
         boolean found = false;
 
         while (!found) {
@@ -42,7 +46,7 @@ public class IDAStarAgent implements Agent {
     /* Search utility function */
 
     public int search(ImplicitBoard board, Stack<Direction> path, int g, int bound) {
-        int f = g + getHeuristicCostEstimate(board);
+        int f = g + heuristic.getHeuristicCostEstimate(board);
         if (f > bound) {return f;}
         if (board.isTerminal()) {return -1;}
 
@@ -66,27 +70,5 @@ public class IDAStarAgent implements Agent {
         }
 
         return min;
-    }
-
-    /* Misplaced Tiles Heuristic */
-
-    private Integer getHeuristicCostEstimate(Board board) {
-        int cost = 0;
-        int idx = 0;
-        int N = board.getSize();
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < N; j++) {
-                /* Don't count the blank tile. */
-                if (board.getAt(i, j) == 0) {
-                    idx++;
-                    continue;
-                }
-                if (board.getAt(i, j) != goalState[idx++]) {
-                    cost += 1;
-                }
-            }
-        }
-
-        return cost;
     }
 }

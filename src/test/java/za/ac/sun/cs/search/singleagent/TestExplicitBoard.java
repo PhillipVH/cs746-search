@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import za.ac.sun.cs.search.singleagent.Board.Direction;
 import za.ac.sun.cs.search.singleagent.Board.ExplicitBoard;
+import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
+import za.ac.sun.cs.search.singleagent.Heuristic.MisplacedTilesHeuristic;
 
 import java.util.*;
 
@@ -18,7 +20,7 @@ public class TestExplicitBoard {
 
     @Before
     public void setupBoard() {
-        board = new ExplicitBoard(configuration);
+        board = new ExplicitBoard(configuration, new MisplacedTilesHeuristic());
     }
 
     @Test
@@ -38,7 +40,7 @@ public class TestExplicitBoard {
     public void testThreeNeighbors() {
 
         short configuration[] = {1, 0, 2, 3, 4, 5, 6, 7, 8};
-        ExplicitBoard newBoard = new ExplicitBoard(configuration);
+        ExplicitBoard newBoard = new ExplicitBoard(configuration, new MisplacedTilesHeuristic());
 
         Assert.assertEquals(3, newBoard.getNeighbors().size());
 
@@ -47,7 +49,7 @@ public class TestExplicitBoard {
 
     @Test
     public void testSwapTiles() {
-        ExplicitBoard initialBoard = new ExplicitBoard(configuration);
+        ExplicitBoard initialBoard = new ExplicitBoard(configuration,new MisplacedTilesHeuristic());
 
         System.out.println("[original] Before swap");
         System.out.println(board.toString());
@@ -77,7 +79,7 @@ public class TestExplicitBoard {
         Assert.assertNotEquals(newBoard, board);
 
         /* Make sure the original board is unmodified. */
-        ExplicitBoard initialBoard = new ExplicitBoard(configuration);
+        ExplicitBoard initialBoard = new ExplicitBoard(configuration, new MisplacedTilesHeuristic());
         Assert.assertEquals(initialBoard, board);
 
 
@@ -98,7 +100,7 @@ public class TestExplicitBoard {
 
     @Test
     public void testComparison() {
-        ExplicitBoard newBoard = new ExplicitBoard(configuration);
+        ExplicitBoard newBoard = new ExplicitBoard(configuration, new MisplacedTilesHeuristic());
 
         board.setCostFromStart(12);
         newBoard.setCostFromStart(0);
@@ -119,7 +121,7 @@ public class TestExplicitBoard {
 
         PriorityQueue<ExplicitBoard> openSet = new PriorityQueue<>(Comparator.reverseOrder());
 
-        ExplicitBoard newBoard = new ExplicitBoard(configuration);
+        ExplicitBoard newBoard = new ExplicitBoard(configuration, new MisplacedTilesHeuristic());
         board.setCostFromStart(12);
 
         newBoard.setCostFromStart(0);
@@ -137,16 +139,17 @@ public class TestExplicitBoard {
 
     @Test
     public void testHeuristic() {
-        ExplicitBoard terminalBoard = new ExplicitBoard(goal);
+        Heuristic heuristic = new MisplacedTilesHeuristic();
+        ExplicitBoard terminalBoard = new ExplicitBoard(goal, heuristic);
 
         /* The board with the goal state as internal state is a terminal node. */
         Assert.assertTrue(terminalBoard.isTerminal());
 
         /* The terminal board has a heuristic cost of zero. */
-        Assert.assertEquals(0, terminalBoard.getHeuristicCostEstimateRaw());
+        Assert.assertEquals(0, heuristic.getHeuristicCostEstimate(terminalBoard));
 
         /* The non-terminal board used as an example should have a score of 7 (we don't count the blank tile. */
-        Assert.assertEquals(7, board.getHeuristicCostEstimateRaw());
+        Assert.assertEquals(7, heuristic.getHeuristicCostEstimate(board));
     }
 
     @Test
@@ -174,7 +177,7 @@ public class TestExplicitBoard {
         short[] configuration = {0, 1, 2, 3};
         short[] goal = {3, 2, 1, 0};
 
-        ExplicitBoard reverse = new ExplicitBoard(configuration, goal);
+        ExplicitBoard reverse = new ExplicitBoard(configuration, goal, new MisplacedTilesHeuristic());
 
         /* Even though the board starts in a traditional start state, it should not be flagged as a terminal node. */
         Assert.assertFalse(reverse.isTerminal());

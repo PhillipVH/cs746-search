@@ -1,12 +1,14 @@
 package za.ac.sun.cs.search.singleagent.Board;
 
+import za.ac.sun.cs.search.singleagent.Domain.Domain;
+
 import java.lang.Thread;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public abstract class Board implements Comparable<Board> {
+public abstract class Board implements Comparable<Board>, Domain {
 
     protected short[] currentState;
     protected short[] goalState;

@@ -2,6 +2,7 @@ package za.ac.sun.cs.search.singleagent.Agent;
 
 import za.ac.sun.cs.search.singleagent.Board.Direction;
 import za.ac.sun.cs.search.singleagent.Board.ExplicitBoard;
+import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
 
 import java.util.*;
 
@@ -12,9 +13,9 @@ public class AStarAgent implements Agent {
 
     private ExplicitBoard startBoard;
 
-    public AStarAgent(short[] configuration) {
+    public AStarAgent(short[] configuration, Heuristic heuristic) {
         this.initialState = Arrays.copyOf(configuration, configuration.length);
-        this.startBoard = new ExplicitBoard(this.initialState);
+        this.startBoard = new ExplicitBoard(this.initialState, heuristic);
     }
 
     private Comparator<ExplicitBoard> explicitBoardComparator = (theBoard, otherBoard) -> {
