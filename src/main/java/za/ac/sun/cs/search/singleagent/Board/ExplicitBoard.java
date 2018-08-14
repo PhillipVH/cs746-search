@@ -1,5 +1,7 @@
 package za.ac.sun.cs.search.singleagent.Board;
 
+import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 

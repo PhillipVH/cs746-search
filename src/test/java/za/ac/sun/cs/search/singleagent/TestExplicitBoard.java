@@ -5,8 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import za.ac.sun.cs.search.singleagent.Board.Direction;
 import za.ac.sun.cs.search.singleagent.Board.ExplicitBoard;
-import za.ac.sun.cs.search.singleagent.Board.Heuristic;
-import za.ac.sun.cs.search.singleagent.Board.MisplacedTilesHeuristic;
+import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
+import za.ac.sun.cs.search.singleagent.Heuristic.MisplacedTilesHeuristic;
 
 import java.util.*;
 
@@ -149,7 +149,7 @@ public class TestExplicitBoard {
         Assert.assertEquals(0, heuristic.getHeuristicCostEstimate(terminalBoard));
 
         /* The non-terminal board used as an example should have a score of 7 (we don't count the blank tile. */
-        Assert.assertEquals(7, heuristic.getHeuristicCostEstimate(terminalBoard));
+        Assert.assertEquals(7, heuristic.getHeuristicCostEstimate(board));
     }
 
     @Test

@@ -2,7 +2,7 @@ package za.ac.sun.cs.search.singleagent.Agent;
 
 import za.ac.sun.cs.search.singleagent.Board.Direction;
 import za.ac.sun.cs.search.singleagent.Board.ExplicitBoard;
-import za.ac.sun.cs.search.singleagent.Board.Heuristic;
+import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
 
 import java.util.*;
 

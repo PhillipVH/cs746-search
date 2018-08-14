@@ -5,7 +5,7 @@ import org.junit.Test;
 import za.ac.sun.cs.search.singleagent.Agent.AStarAgent;
 import za.ac.sun.cs.search.singleagent.Agent.BidirectionalAStarAgent;
 import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Board.MisplacedTilesHeuristic;
+import za.ac.sun.cs.search.singleagent.Heuristic.MisplacedTilesHeuristic;
 
 import java.util.Arrays;
 

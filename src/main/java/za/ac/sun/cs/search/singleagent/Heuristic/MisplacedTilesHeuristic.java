@@ -1,9 +1,6 @@
-package za.ac.sun.cs.search.singleagent.Board;
+package za.ac.sun.cs.search.singleagent.Heuristic;
 
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Board.ImplicitBoard;
-
-import java.util.Stack;
+import za.ac.sun.cs.search.singleagent.Domain.Domain;
 
 public class MisplacedTilesHeuristic implements Heuristic {
    

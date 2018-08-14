@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import za.ac.sun.cs.search.singleagent.Board.Board;
 import za.ac.sun.cs.search.singleagent.Board.ExplicitBoard;
-import za.ac.sun.cs.search.singleagent.Board.MisplacedTilesHeuristic;
+import za.ac.sun.cs.search.singleagent.Heuristic.MisplacedTilesHeuristic;
 
 public class TestBoard {
 

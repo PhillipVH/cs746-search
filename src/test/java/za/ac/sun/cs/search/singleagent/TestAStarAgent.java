@@ -4,8 +4,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import za.ac.sun.cs.search.singleagent.Agent.AStarAgent;
 import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Board.Heuristic;
-import za.ac.sun.cs.search.singleagent.Board.MisplacedTilesHeuristic;
+import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
+import za.ac.sun.cs.search.singleagent.Heuristic.MisplacedTilesHeuristic;
 
 import java.util.Arrays;
 

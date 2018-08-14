@@ -1,5 +1,7 @@
 package za.ac.sun.cs.search.singleagent.Board;
 
+import za.ac.sun.cs.search.singleagent.Domain.Domain;
+
 import java.lang.Thread;
 
 import java.util.ArrayList;
