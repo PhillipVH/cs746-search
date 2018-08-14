@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import za.ac.sun.cs.search.singleagent.Board.Board;
 import za.ac.sun.cs.search.singleagent.Board.ExplicitBoard;
+import za.ac.sun.cs.search.singleagent.Board.MisplacedTilesHeuristic;
 
 public class TestBoard {
 
@@ -14,7 +15,7 @@ public class TestBoard {
 
     @Before
     public void setup()  {
-        board = new ExplicitBoard(configuration);
+        board = new ExplicitBoard(configuration, new MisplacedTilesHeuristic());
     }
 
     @Test
