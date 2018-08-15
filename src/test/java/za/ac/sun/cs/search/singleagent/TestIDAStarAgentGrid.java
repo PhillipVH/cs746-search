@@ -1,0 +1,33 @@
+package za.ac.sun.cs.search.singleagent;
+
+import java.beans.Transient;
+
+import org.junit.Test;
+import za.ac.sun.cs.search.singleagent.Agent.IDAStarGridAgent;
+import za.ac.sun.cs.search.singleagent.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Grid.ImplicitGrid;
+import za.ac.sun.cs.search.singleagent.Heuristic.EucledianHeuristic;
+
+public class TestIDAStarAgentGrid {
+
+    @Test
+
+    public void smokeTest() throws Exception {
+        /* TODO Will probably be passed in as an argument. */
+
+        boolean configuration[][] = { { false, true, true }, { true, true, true }, { false, true, true } };
+        boolean configuration2[][] = { { false, true, true }, { true, true, true }, { false, true, true } };
+
+        short[] playerPosition = { 2, 2 };
+        short[] playerPosition2 = { 2, 2 };
+        short[] goalPosition = { 0, 1 };
+
+        IDAStarGridAgent idaStarAgent = new IDAStarGridAgent(configuration, playerPosition, goalPosition,
+                new EucledianHeuristic());
+        Direction[] path = idaStarAgent.solve();
+
+        ImplicitGrid grid = new ImplicitGrid(configuration2, playerPosition2, goalPosition);
+        grid.visualizePath(path);
+
+    }
+}
