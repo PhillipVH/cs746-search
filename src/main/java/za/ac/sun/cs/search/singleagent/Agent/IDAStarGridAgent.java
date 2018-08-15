@@ -62,7 +62,6 @@ public class IDAStarGridAgent implements Agent {
             }
             grid.makeMove(move);
             grid.setPreviousMove(move);
-
             path.add(move);
             int t = search(grid, path, g + 1, bound);
             if (t == -1) {

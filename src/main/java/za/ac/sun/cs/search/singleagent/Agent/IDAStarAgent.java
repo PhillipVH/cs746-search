@@ -5,7 +5,6 @@ import za.ac.sun.cs.search.singleagent.Board.Direction;
 import za.ac.sun.cs.search.singleagent.Board.ImplicitBoard;
 import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
 
-
 import java.util.Stack;
 
 public class IDAStarAgent implements Agent {
@@ -36,7 +35,9 @@ public class IDAStarAgent implements Agent {
 
         while (!found) {
             int i = search(board, path, 0, bound);
-            if (i == -1) {found = true;}
+            if (i == -1) {
+                found = true;
+            }
             bound = i;
         }
 
@@ -47,8 +48,12 @@ public class IDAStarAgent implements Agent {
 
     public int search(ImplicitBoard board, Stack<Direction> path, int g, int bound) {
         int f = g + heuristic.getHeuristicCostEstimate(board);
-        if (f > bound) {return f;}
-        if (board.isTerminal()) {return -1;}
+        if (f > bound) {
+            return f;
+        }
+        if (board.isTerminal()) {
+            return -1;
+        }
 
         int min = (int) Double.POSITIVE_INFINITY;
         Direction previousMove = board.getPrevious();
@@ -61,8 +66,12 @@ public class IDAStarAgent implements Agent {
 
             path.add(move);
             int t = search(board, path, g + 1, bound);
-            if (t == -1) {return -1;}
-            if (t < min) {min = t;}
+            if (t == -1) {
+                return -1;
+            }
+            if (t < min) {
+                min = t;
+            }
             path.pop();
             board.undoMove(move);
             board.setPreviousMove(previousMove);

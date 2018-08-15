@@ -33,7 +33,6 @@ public class ImplicitGrid extends Grid {
 
     public void makeMove(Direction move) {
         short[] player = this.getPlayerPosition();
-
         switch (move) {
         case UP:
             this.setPlayerPostion(player[0] - 1, player[1]);

@@ -15,17 +15,18 @@ public class TestIDAStarAgentGrid {
     public void smokeTest() throws Exception {
         /* TODO Will probably be passed in as an argument. */
 
-        boolean configuration[][] = { { false, true }, { true, true } };
-        boolean configuration2[][] = { { false, true }, { true, true } };
+        boolean configuration[][] = { { false, true, true }, { true, true, true } };
+        boolean configuration2[][] = { { false, true, true }, { true, true, true } };
 
         short[] playerPosition = { 1, 0 };
+        short[] playerPosition2 = { 1, 0 };
         short[] goalPosition = { 0, 1 };
 
         IDAStarGridAgent idaStarAgent = new IDAStarGridAgent(configuration, playerPosition, goalPosition,
                 new EucledianHeuristic());
         Direction[] path = idaStarAgent.solve();
 
-        ImplicitGrid grid = new ImplicitGrid(configuration2, playerPosition, goalPosition);
+        ImplicitGrid grid = new ImplicitGrid(configuration2, playerPosition2, goalPosition);
         grid.visualizePath(path);
 
     }
