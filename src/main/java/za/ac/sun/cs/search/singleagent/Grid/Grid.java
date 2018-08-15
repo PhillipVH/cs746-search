@@ -28,6 +28,10 @@ public abstract class Grid implements Domain {
         return this.size;
     }
 
+    public boolean[][] getGrid() {
+        return this.grid;
+    }
+
     public short[] getGoalState() {
         return this.goalPosition;
     }
