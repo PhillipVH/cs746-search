@@ -52,7 +52,13 @@ public abstract class Grid implements Domain {
         for (int i = 0; i < this.size; i++) {
             outputBuilder.append('[');
             for (int j = 0; j < this.size; j++) {
-                outputBuilder.append(getAt(i, j));
+                if (this.playerPosition[0] == i && this.playerPosition[1] == j) {
+                    outputBuilder.append('P');
+                } else if (this.goalPosition[0] == i && this.goalPosition[1] == j) {
+                    outputBuilder.append('G');
+                } else {
+                    outputBuilder.append(getAt(i, j));
+                }
                 if (j != this.size - 1) {
                     outputBuilder.append(' ');
                 }

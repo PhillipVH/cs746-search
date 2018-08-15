@@ -6,7 +6,7 @@ public class ImplicitGrid extends Grid {
     protected Direction previousMove;
 
     /**
-     * Initialize the internal state of the board and calculate the size of it.
+     * Initialize the internal state of the grid and calculate the size of it.
      *
      * @param initialState An array of the initial tile configuration, as read from
      *                     left to right and top to bottom.
