@@ -71,22 +71,22 @@ public abstract class Grid implements Domain {
     }
 
     public Direction[] getLegalMoves() {
-        ArrayList<Direction> legalMoves = new ArrayList<Direction>();
+        ArrayList<Direction> legalMoves = new ArrayList<>();
 
-        if (this.playerPosition[0] > 0 && this.grid[this.playerPosition[0] - 1][this.playerPosition[1]] == true) {
+        if (this.playerPosition[0] - 1 > 0 && this.grid[this.playerPosition[0] - 1][this.playerPosition[1]] == true) {
             legalMoves.add(Direction.UP);
         }
 
-        if (this.playerPosition[0] < this.size
+        if (this.playerPosition[0] + 1 < this.size
                 && this.grid[this.playerPosition[0] + 1][this.playerPosition[1]] == true) {
             legalMoves.add(Direction.DOWN);
         }
 
-        if (this.playerPosition[1] > 0 && this.grid[this.playerPosition[0]][this.playerPosition[1] - 1] == true) {
+        if (this.playerPosition[1] - 1 > 0 && this.grid[this.playerPosition[0]][this.playerPosition[1] - 1] == true) {
             legalMoves.add(Direction.LEFT);
         }
 
-        if (this.playerPosition[1] < this.size
+        if (this.playerPosition[1] + 1 < this.size
                 && this.grid[this.playerPosition[0]][this.playerPosition[1] + 1] == true) {
             legalMoves.add(Direction.RIGHT);
         }
