@@ -17,7 +17,7 @@ public abstract class Grid implements Domain {
         this.grid = initialState;
         this.playerPosition = playerPosition;
         this.goalPosition = goalPosition;
-        this.size = initialState.length;
+        this.size = initialState[0].length;
     }
 
     public short getAt(int i, int j) {

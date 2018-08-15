@@ -15,11 +15,11 @@ public class TestIDAStarAgentGrid {
     public void smokeTest() throws Exception {
         /* TODO Will probably be passed in as an argument. */
 
-        boolean configuration[][] = { { false, true, true }, { true, true, true } };
-        boolean configuration2[][] = { { false, true, true }, { true, true, true } };
+        boolean configuration[][] = { { false, true, true }, { true, true, true }, { false, true, true } };
+        boolean configuration2[][] = { { false, true, true }, { true, true, true }, { false, true, true } };
 
-        short[] playerPosition = { 1, 0 };
-        short[] playerPosition2 = { 1, 0 };
+        short[] playerPosition = { 2, 2 };
+        short[] playerPosition2 = { 2, 2 };
         short[] goalPosition = { 0, 1 };
 
         IDAStarGridAgent idaStarAgent = new IDAStarGridAgent(configuration, playerPosition, goalPosition,
