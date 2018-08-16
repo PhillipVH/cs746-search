@@ -8,6 +8,9 @@ import za.ac.sun.cs.search.singleagent.Grid.ExplicitGrid;
 import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
 import za.ac.sun.cs.search.singleagent.Heuristic.EucledianHeuristic;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 
 public class TestAStarGridAgent {
