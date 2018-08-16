@@ -69,29 +69,29 @@ public class GridRepl {
 
         /* Read in the obstacles */
         while (true) {
-            System.out.println("Enter x-start of obstacle (or skip to continue): ");
-            int obstacleX = 0;
-            int obstacleXEnd = 0;
+            System.out.println("Enter start coordinate (x, y) of obstacle (or skip to continue): ");
+            int x1;
+            int y1;
             try {
-                obstacleX = Integer.parseInt(input.readLine());
-                obstacleXEnd = Integer.parseInt(input.readLine());
+                x1 = Integer.parseInt(input.readLine());
+                y1 = Integer.parseInt(input.readLine());
             } catch (IOException | NumberFormatException e) {
                 break;
             }
 
-            System.out.println("Enter y-start of obstacle (or skip to continue): ");
-            int obstacleY = 0;
-            int obstacleYEnd = 0;
+            System.out.println("Enter end coordinate (x, y) of obstacle (or skip to continue): ");
+            int x2;
+            int y2;
             try {
-                obstacleY = Integer.parseInt(input.readLine());
-                obstacleYEnd = Integer.parseInt(input.readLine());
+                x2 = Integer.parseInt(input.readLine());
+                y2 = Integer.parseInt(input.readLine());
 
             } catch (IOException | NumberFormatException e) {
                 break;
             }
 
-            for (int i = obstacleX; i < obstacleXEnd; i++) {
-                for (int j = obstacleY; j < obstacleYEnd; j++) {
+            for (int i = x1; i < x2; i++) {
+                for (int j = y1; j < y2; j++) {
                     configuration[i][j] = false;
                 }
             }
@@ -108,6 +108,12 @@ public class GridRepl {
         AStarGridAgent aStarGridAgent = new AStarGridAgent(Arrays.copyOf(configuration, configuration.length), playerPos, goalPos, new EucledianHeuristic());
 
         Direction[] solution = aStarGridAgent.solve();
+
+        /* Check if we found a solution. */
+        if (solution == null) {
+            System.out.println("Could not find a path.");
+            System.exit(1);
+        }
 
         /* Paint the grid with the solution. */
         List<short[]> playerPositions = new ArrayList<>();
@@ -165,7 +171,7 @@ public class GridRepl {
                 }
 
                 if (isWalkable) {
-                    System.out.print("_\t");
+                    System.out.print(".\t");
                     continue;
                 } else {
                     System.out.print("O\t");
