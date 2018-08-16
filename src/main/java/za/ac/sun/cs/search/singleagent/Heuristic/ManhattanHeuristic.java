@@ -29,11 +29,13 @@ public class ManhattanHeuristic implements Heuristic {
 
     private int getDistance(short[] goalState, int row, int column, short tile) {
         int cost = 0;
+        int n = goalState.length;
+        int size = (int) Math.sqrt(n);
 
-        for (int i = 0; i < goalState.length; i++) {
+        for (int i = 0; i < n; i++) {
             if (goalState[i] == tile) {
-                cost += Math.abs((i / 3) - row);
-                cost += Math.abs((i % 3) - column);
+                cost += Math.abs((i / size) - row);
+                cost += Math.abs((i % size) - column);
                 return cost;
             }
         }

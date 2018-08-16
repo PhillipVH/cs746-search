@@ -12,12 +12,15 @@ public class IDAStarAgent implements Agent {
     private short[] goalState;
     private ImplicitBoard board;
     private Heuristic heuristic;
+    private int exploredNodes;
+    private int initalEstimate;
 
     public IDAStarAgent(short[] configuration, Heuristic heuristic) {
         this.initialState = configuration;
         this.board = new ImplicitBoard(initialState);
         this.goalState = this.board.getGoalState();
         this.heuristic = heuristic;
+        this.exploredNodes = 0;
 
     }
 
@@ -31,6 +34,7 @@ public class IDAStarAgent implements Agent {
     public Direction[] solve() {
         Stack<Direction> path = new Stack<>();
         int bound = heuristic.getHeuristicCostEstimate(board);
+        initalEstimate = bound;
         boolean found = false;
 
         while (!found) {
@@ -62,6 +66,7 @@ public class IDAStarAgent implements Agent {
                 continue;
             }
             board.makeMove(move);
+            exploredNodes++;
             board.setPreviousMove(move);
 
             path.add(move);
@@ -79,5 +84,13 @@ public class IDAStarAgent implements Agent {
         }
 
         return min;
+    }
+
+    public int getInitialEstimate() {
+        return initalEstimate;
+    }
+
+    public int getExploredNodes() {
+        return exploredNodes;
     }
 }
