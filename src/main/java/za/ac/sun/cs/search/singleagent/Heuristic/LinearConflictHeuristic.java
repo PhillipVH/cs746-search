@@ -10,7 +10,6 @@ public class LinearConflictHeuristic implements Heuristic {
         int idx = 0;
         int N = domain.getSize();
         short[] goalState = domain.getGoalState();
-
         cost += linearVerticalConflict(domain, goalState);
         cost += linearHorizontalConflict(domain, goalState);
 

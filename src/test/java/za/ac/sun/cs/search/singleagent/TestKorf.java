@@ -15,7 +15,7 @@ public class TestKorf {
 
         short configuration[] = { 14, 13, 15, 7, 11, 12, 9, 5, 6, 0, 2, 1, 4, 8, 10, 3 };
 
-        IDAStarAgent idaStarAgent = new IDAStarAgent(configuration, new LinearConflictHeuristic());
+        IDAStarAgent idaStarAgent = new IDAStarAgent(configuration, new ManhattanHeuristic());
         Direction[] path = idaStarAgent.solve();
 
         Assert.assertEquals(276361933, idaStarAgent.getExploredNodes());
@@ -29,7 +29,7 @@ public class TestKorf {
 
         short configuration[] = { 13, 5, 4, 10, 9, 12, 8, 14, 2, 3, 7, 1, 0, 15, 11, 6 };
 
-        IDAStarAgent idaStarAgent = new IDAStarAgent(configuration, new LinearConflictHeuristic());
+        IDAStarAgent idaStarAgent = new IDAStarAgent(configuration, new ManhattanHeuristic());
         Direction[] path = idaStarAgent.solve();
 
         Assert.assertEquals(15300442, idaStarAgent.getExploredNodes());
@@ -43,7 +43,7 @@ public class TestKorf {
 
         short configuration[] = { 14, 7, 8, 2, 13, 11, 10, 4, 9, 12, 5, 0, 3, 6, 1, 15 };
 
-        IDAStarAgent idaStarAgent = new IDAStarAgent(configuration, new LinearConflictHeuristic());
+        IDAStarAgent idaStarAgent = new IDAStarAgent(configuration, new ManhattanHeuristic());
         Direction[] path = idaStarAgent.solve();
 
         Assert.assertEquals(565994203, idaStarAgent.getExploredNodes());
@@ -57,7 +57,7 @@ public class TestKorf {
 
         short configuration[] = { 3, 14, 9, 11, 5, 4, 8, 2, 13, 12, 6, 7, 10, 1, 15, 0 };
 
-        IDAStarAgent idaStarAgent = new IDAStarAgent(configuration, new LinearConflictHeuristic());
+        IDAStarAgent idaStarAgent = new IDAStarAgent(configuration, new ManhattanHeuristic());
         Direction[] path = idaStarAgent.solve();
 
         Assert.assertEquals(1650696, idaStarAgent.getExploredNodes());
