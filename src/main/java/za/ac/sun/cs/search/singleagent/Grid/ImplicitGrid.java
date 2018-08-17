@@ -6,10 +6,19 @@ public class ImplicitGrid extends Grid {
     protected Direction previousMove;
 
     /**
-     * Initialize the internal state of the grid and calculate the size of it.
+     * Initialize the internal state of the grid and calculate the size of it. This
+     * constructor initializes the goal state for us.
      *
-     * @param initialState An array of the initial tile configuration, as read from
-     *                     left to right and top to bottom.
+     * @param initialState   An array of the initial grid configuration, as read
+     *                       from left to right and top to bottom.
+     * 
+     * @param playerPosition Position of the player.
+     * 
+     * @param goalPosition   Position of the goal.
+     * 
+     * @param Heuristic      Heuristic function which will be used to evaluate
+     *                       costs.
+     * 
      */
     public ImplicitGrid(boolean[][] initialState, short[] playerPosition, short[] goalPosition) {
         super(initialState, playerPosition, goalPosition);

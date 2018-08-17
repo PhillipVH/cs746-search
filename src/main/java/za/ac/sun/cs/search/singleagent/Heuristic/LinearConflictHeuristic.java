@@ -2,6 +2,8 @@ package za.ac.sun.cs.search.singleagent.Heuristic;
 
 import za.ac.sun.cs.search.singleagent.Domain.Domain;
 
+/* Linear conflict heuristic, built on top of the manhattan distance heurisitic. */
+
 public class LinearConflictHeuristic implements Heuristic {
 
     @Override
