@@ -76,7 +76,7 @@ public class LinearConflictHeuristic implements Heuristic {
                     if (tile > max) {
                         max = tile;
                     } else {
-                        cost += 2;
+                        cost += 1;
                     }
                 }
             }
@@ -99,7 +99,7 @@ public class LinearConflictHeuristic implements Heuristic {
                     if (tile > max) {
                         max = tile;
                     } else {
-                        cost += 2;
+                        cost += 1;
                     }
                 }
             }
