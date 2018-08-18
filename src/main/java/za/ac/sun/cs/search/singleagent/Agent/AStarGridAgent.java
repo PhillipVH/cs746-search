@@ -13,6 +13,10 @@ public class AStarGridAgent implements Agent {
 
     private ExplicitGrid startBoard;
 
+
+    /* A counter to keep track of the number of nodes explored. */
+    int exploredNodes = 0;
+
     public AStarGridAgent(boolean[][] configuration, short[] playerPosition, short[] goalPosition,
             Heuristic heuristic) {
         this.initialState = Arrays.copyOf(configuration, configuration.length);
@@ -45,8 +49,6 @@ public class AStarGridAgent implements Agent {
 
         openSet.add(startBoard);
 
-        /* A counter to keep track of the number of nodes explored. */
-        long exploredNodes = 0L;
 
         /* While there is still world to explore, explore it! */
         while (!openSet.isEmpty()) {
@@ -160,6 +162,13 @@ public class AStarGridAgent implements Agent {
         }
         return null;
 
+    }
+
+    /**
+     * @return The number of nodes explored by this agent.
+     */
+    public int getExploredNodes() {
+        return this.exploredNodes;
     }
 
 }

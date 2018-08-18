@@ -19,6 +19,9 @@ public class BidirectionalAStarAgent implements Agent {
     private ExplicitBoard uPath = null;
     private boolean allowUnoptimalSolution;
 
+    /* A counter to keep track of the number of nodes explored. */
+    int exploredNodes = 0;
+
     private Heuristic heuristic;
 
     public BidirectionalAStarAgent(short[] configuration, boolean allowUnoptimalSolution, Heuristic heuristic) {
@@ -78,9 +81,6 @@ public class BidirectionalAStarAgent implements Agent {
         /* The searches get a change to run in round robin fashion. */
         PriorityQueue<ExplicitBoard> openSetRef = openSetForward;
         HashSet<ExplicitBoard> closedSetRef = closedSetForward;
-
-        /* A counter to keep track of the number of nodes explored. */
-        long exploredNodes = 0L;
 
         boolean forward = true;
 
@@ -339,6 +339,13 @@ public class BidirectionalAStarAgent implements Agent {
         }
         return null;
 
+    }
+
+    /**
+     * @return The number of nodes explored by this agent.
+     */
+    public int getExploredNodes() {
+        return this.exploredNodes;
     }
 
 

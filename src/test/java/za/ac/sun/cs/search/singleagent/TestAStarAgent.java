@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import za.ac.sun.cs.search.singleagent.Agent.AStarAgent;
 import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
 import za.ac.sun.cs.search.singleagent.Heuristic.MisplacedTilesHeuristic;
 
 import java.util.Arrays;
@@ -22,6 +21,7 @@ public class TestAStarAgent {
 
         System.out.println(Arrays.toString(solution));
         System.out.println("Solution Cost: " + solution.length);
+        System.out.println("Explored Nodes: " + aStarAgent.getExploredNodes());
     }
 
     @Test
@@ -36,6 +36,7 @@ public class TestAStarAgent {
 
         System.out.println(Arrays.toString(solution));
         System.out.println("Solution Cost: " + solution.length);
+        System.out.println("Explored Nodes: " + aStarAgent.getExploredNodes());
     }
 
     @Test
@@ -50,5 +51,6 @@ public class TestAStarAgent {
 
         System.out.println(Arrays.toString(solution));
         System.out.println("Solution Cost: " + solution.length);
+        System.out.println("Explored Nodes: " + aStarAgent.getExploredNodes());
     }
 }

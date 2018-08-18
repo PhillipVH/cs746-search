@@ -22,6 +22,9 @@ public class BidirectionalAStarGridAgent implements Agent {
     private short[] initialPlayerPosition;
     private short[] goalPosition;
 
+    /* A counter to keep track of the number of nodes explored. */
+    private int exploredNodes = 0;
+
     private Heuristic heuristic;
 
     public BidirectionalAStarGridAgent(boolean[][] configuration, short[] playerPosition, short[] goalPosition,
@@ -88,9 +91,6 @@ public class BidirectionalAStarGridAgent implements Agent {
         /* The searches get a change to run in round robin fashion. */
         PriorityQueue<ExplicitGrid> openSetRef = openSetForward;
         HashSet<ExplicitGrid> closedSetRef = closedSetForward;
-
-        /* A counter to keep track of the number of nodes explored. */
-        long exploredNodes = 0L;
 
         boolean forward = true;
 
@@ -351,6 +351,13 @@ public class BidirectionalAStarGridAgent implements Agent {
         }
         return null;
 
+    }
+
+    /**
+     * @return The number of nodes explored by this agent.
+     */
+    public int getExploredNodes() {
+        return this.exploredNodes;
     }
 
 }
