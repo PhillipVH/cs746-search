@@ -1,13 +1,12 @@
 package za.ac.sun.cs.search.singleagent.Agent;
 
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Grid.ExplicitGrid;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Grid.ExplicitGrid;
 import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
 
 import java.util.*;
-import java.util.logging.Logger;
 
-import static za.ac.sun.cs.search.singleagent.Board.Direction.*;
+import static za.ac.sun.cs.search.singleagent.Domain.Board.Direction.*;
 
 public class BidirectionalAStarGridAgent implements Agent {
     private boolean[][] initialState;

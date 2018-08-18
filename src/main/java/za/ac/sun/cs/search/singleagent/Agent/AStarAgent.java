@@ -1,12 +1,12 @@
 package za.ac.sun.cs.search.singleagent.Agent;
 
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Board.ExplicitBoard;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Board.ExplicitBoard;
 import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
 
 import java.util.*;
 
-import static za.ac.sun.cs.search.singleagent.Board.Direction.*;
+import static za.ac.sun.cs.search.singleagent.Domain.Board.Direction.*;
 
 public class AStarAgent implements Agent {
     private short[] initialState;

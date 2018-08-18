@@ -2,9 +2,8 @@ package za.ac.sun.cs.search.singleagent;
 
 import org.junit.Assert;
 import org.junit.Test;
-import za.ac.sun.cs.search.singleagent.Agent.AStarAgent;
 import za.ac.sun.cs.search.singleagent.Agent.BidirectionalAStarAgent;
-import za.ac.sun.cs.search.singleagent.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
 import za.ac.sun.cs.search.singleagent.Heuristic.MisplacedTilesHeuristic;
 
 import java.util.Arrays;

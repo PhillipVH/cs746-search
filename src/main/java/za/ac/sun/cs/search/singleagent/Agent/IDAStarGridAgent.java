@@ -1,7 +1,7 @@
 package za.ac.sun.cs.search.singleagent.Agent;
 
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Grid.ImplicitGrid;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Grid.ImplicitGrid;
 import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
 
 import java.util.Stack;

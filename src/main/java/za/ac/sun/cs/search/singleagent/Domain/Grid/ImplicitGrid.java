@@ -1,6 +1,6 @@
-package za.ac.sun.cs.search.singleagent.Grid;
+package za.ac.sun.cs.search.singleagent.Domain.Grid;
 
-import za.ac.sun.cs.search.singleagent.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
 
 public class ImplicitGrid extends Grid {
     protected Direction previousMove;

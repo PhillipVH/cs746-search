@@ -1,8 +1,7 @@
-package za.ac.sun.cs.search.singleagent.Grid;
+package za.ac.sun.cs.search.singleagent.Domain.Grid;
 
 import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
-import za.ac.sun.cs.search.singleagent.Grid.ExplicitGrid;
-import za.ac.sun.cs.search.singleagent.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
 
 import java.util.Arrays;
 import java.util.LinkedList;

@@ -1,4 +1,4 @@
-package za.ac.sun.cs.search.singleagent.Board;
+package za.ac.sun.cs.search.singleagent.Domain.Board;
 
 import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
 

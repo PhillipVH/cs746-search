@@ -1,11 +1,8 @@
 package za.ac.sun.cs.search.singleagent;
 
-import org.junit.Assert;
 import org.junit.Test;
 import za.ac.sun.cs.search.singleagent.Agent.AStarGridAgent;
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Grid.ExplicitGrid;
-import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
 import za.ac.sun.cs.search.singleagent.Heuristic.EucledianHeuristic;
 
 import java.util.Arrays;
