@@ -1,7 +1,8 @@
 package za.ac.sun.cs.search.singleagent.Domain;
 
-/* Interface, which the N-Puzzle and Pathfinder problem both implement. */
-
+/**
+ * Common domain-specific methods for the N-puzzle and path-finding puzzle.
+ */
 public interface Domain {
     short getAt(int i, int j);
 

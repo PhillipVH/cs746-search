@@ -4,7 +4,7 @@ import org.junit.Test;
 import za.ac.sun.cs.search.singleagent.Agent.IDAStarGridAgent;
 import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
 import za.ac.sun.cs.search.singleagent.Domain.Grid.ImplicitGrid;
-import za.ac.sun.cs.search.singleagent.Heuristic.EucledianHeuristic;
+import za.ac.sun.cs.search.singleagent.Heuristic.EuclideanHeuristic;
 
 public class TestIDAStarAgentGrid {
 
@@ -21,7 +21,7 @@ public class TestIDAStarAgentGrid {
         short[] goalPosition = { 0, 1 };
 
         IDAStarGridAgent idaStarAgent = new IDAStarGridAgent(configuration, playerPosition, goalPosition,
-                new EucledianHeuristic());
+                new EuclideanHeuristic());
         Direction[] path = idaStarAgent.solve();
 
         ImplicitGrid grid = new ImplicitGrid(configuration2, playerPosition2, goalPosition);
@@ -43,7 +43,7 @@ public class TestIDAStarAgentGrid {
         short[] goalPosition = { 0, 1 };
 
         IDAStarGridAgent idaStarAgent = new IDAStarGridAgent(configuration, playerPosition, goalPosition,
-                new EucledianHeuristic(1.5));
+                new EuclideanHeuristic(1.5));
         Direction[] path = idaStarAgent.solve();
 
         ImplicitGrid grid = new ImplicitGrid(configuration2, playerPosition2, goalPosition);

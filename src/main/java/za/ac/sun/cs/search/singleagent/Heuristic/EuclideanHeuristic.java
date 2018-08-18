@@ -4,14 +4,14 @@ import za.ac.sun.cs.search.singleagent.Domain.Domain;
 
 /* Eucledian distance heuristic, calcualtes the straight line distance between the player and the goal */
 
-public class EucledianHeuristic implements Heuristic {
+public class EuclideanHeuristic implements Heuristic {
     private double epsilon;
 
-    public EucledianHeuristic(double epsilon) {
+    public EuclideanHeuristic(double epsilon) {
         this.epsilon = epsilon;
     }
 
-    public EucledianHeuristic() {
+    public EuclideanHeuristic() {
         this.epsilon = 1;
     }
 

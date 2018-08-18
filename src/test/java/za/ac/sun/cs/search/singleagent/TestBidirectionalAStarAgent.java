@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import za.ac.sun.cs.search.singleagent.Agent.BidirectionalAStarAgent;
 import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Heuristic.ManhattanHeuristic;
 import za.ac.sun.cs.search.singleagent.Heuristic.MisplacedTilesHeuristic;
 
 import java.util.Arrays;
@@ -42,7 +43,7 @@ public class TestBidirectionalAStarAgent {
     public void hard8Puzzle() {
         short configuration[] = {8, 6, 7, 2, 5, 4, 3, 0, 1};
 
-        BidirectionalAStarAgent bidirectionalAStarAgent = new BidirectionalAStarAgent(configuration, true, new MisplacedTilesHeuristic());
+        BidirectionalAStarAgent bidirectionalAStarAgent = new BidirectionalAStarAgent(configuration, true, new ManhattanHeuristic());
 
         Direction[] solution = bidirectionalAStarAgent.solve();
 
