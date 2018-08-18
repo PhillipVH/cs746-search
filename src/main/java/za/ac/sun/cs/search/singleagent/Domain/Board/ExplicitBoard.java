@@ -5,7 +5,6 @@ import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-
 public class ExplicitBoard extends Board {
     private ExplicitBoard parent;
     private int costFromStart;
@@ -14,10 +13,12 @@ public class ExplicitBoard extends Board {
     private Heuristic heuristic;
 
     /**
-     * Initialize the internal state of the board and calculate the size of it. This constructor initializes the goal
-     * state for us.
+     * Initialize the internal state of the board and calculate the size of it. This
+     * constructor initializes the goal state for us.
      *
-     * @param initialState An array of the initial tile configuration, as read from left to right and top to bottom.
+     * @param initialState An array of the initial tile configuration, as read from
+     *                     left to right and top to bottom.
+     * @param Heuristic    Heuristic function which will be used to evaluate costs.
      */
     public ExplicitBoard(short[] initialState, Heuristic heuristic) {
         super(initialState);
@@ -26,10 +27,11 @@ public class ExplicitBoard extends Board {
     }
 
     /**
-     * Initialize the internal state of the board and calculate the size of it. This constructor initializes the goal
-     * state for us.
+     * Initialize the internal state of the board and calculate the size of it. This
+     * constructor initializes the goal state for us.
      *
-     * @param initialState An array of the initial tile configuration, as read from left to right and top to bottom.
+     * @param initialState An array of the initial tile configuration, as read from
+     *                     left to right and top to bottom.
      */
     public ExplicitBoard(short[] initialState, short[] goalState, Heuristic heuristic) {
         super(initialState, goalState);
@@ -62,7 +64,6 @@ public class ExplicitBoard extends Board {
         return costFromStart;
     }
 
-
     public void setCostFromStart(int cost) {
         this.costFromStart = cost;
         this.estimatedCost = this.heuristic.getHeuristicCostEstimate(this);
@@ -94,7 +95,10 @@ public class ExplicitBoard extends Board {
             /* This board is the parent of the neighbor. */
             neighbor.setParent(this);
 
-            /* It cost one move to get to this neighbor, so set the cost from the start appropriately. */
+            /*
+             * It cost one move to get to this neighbor, so set the cost from the start
+             * appropriately.
+             */
             neighbor.setCostFromStart(this.costFromStart + 1);
             neighbors.add(neighbor);
         }
@@ -106,22 +110,23 @@ public class ExplicitBoard extends Board {
         short[] emptyPosition = this.getEmptyTilePosition();
 
         switch (move) {
-            case UP:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
-            case DOWN:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] + 1, emptyPosition[1]);
-            case LEFT:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] - 1);
-            case RIGHT:
-                return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
-            default:
-                return null;
+        case UP:
+            return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
+        case DOWN:
+            return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] + 1, emptyPosition[1]);
+        case LEFT:
+            return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] - 1);
+        case RIGHT:
+            return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
+        default:
+            return null;
         }
     }
 
     public ExplicitBoard swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
         int tempTile = this.getAt(toRow, toCol);
-        ExplicitBoard temp = new ExplicitBoard(Arrays.copyOf(this.getCurrentState(), this.getCurrentState().length), this.goalState, heuristic);
+        ExplicitBoard temp = new ExplicitBoard(Arrays.copyOf(this.getCurrentState(), this.getCurrentState().length),
+                this.goalState, heuristic);
         temp.putAt(toRow, toCol, (short) 0);
         temp.putAt(fromRow, fromCol, (short) tempTile);
 
@@ -145,6 +150,3 @@ public class ExplicitBoard extends Board {
         return Arrays.hashCode(this.currentState);
     }
 }
-
-
-

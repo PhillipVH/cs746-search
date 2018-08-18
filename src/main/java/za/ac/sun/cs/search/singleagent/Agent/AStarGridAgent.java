@@ -30,7 +30,7 @@ public class AStarGridAgent implements Agent {
     };
 
     /**
-     * Solve the given N-puzzle using A* on an explicit tree.
+     * Solve the given Path Finder using A* on an explicit tree.
      *
      * @return An array of {@link Direction}s that when applied to the initial state
      *         result in the goal state.

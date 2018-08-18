@@ -14,7 +14,7 @@ public class AStarAgent implements Agent {
     private ExplicitBoard startBoard;
 
     /* A counter to keep track of the number of nodes explored. */
-    public int exploredNodes = 0;
+    private int exploredNodes = 0;
 
     public AStarAgent(short[] configuration, Heuristic heuristic) {
         this.initialState = Arrays.copyOf(configuration, configuration.length);

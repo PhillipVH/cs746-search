@@ -14,11 +14,19 @@ public class ExplicitGrid extends Grid {
     private Heuristic heuristic;
 
     /**
-     * Initialize the internal state of the board and calculate the size of it. This
+     * Initialize the internal state of the grid and calculate the size of it. This
      * constructor initializes the goal state for us.
      *
-     * @param initialState An array of the initial tile configuration, as read from
-     *                     left to right and top to bottom.
+     * @param initialState   An array of the initial grid configuration, as read
+     *                       from left to right and top to bottom.
+     * 
+     * @param playerPosition Position of the player.
+     * 
+     * @param goalPosition   Position of the goal.
+     * 
+     * @param Heuristic      Heuristic function which will be used to evaluate
+     *                       costs.
+     * 
      */
     public ExplicitGrid(boolean[][] initialState, short[] playerPosition, short[] goalPosition, Heuristic heuristic) {
         super(initialState, playerPosition, goalPosition);

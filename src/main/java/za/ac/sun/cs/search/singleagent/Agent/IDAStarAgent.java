@@ -20,7 +20,6 @@ public class IDAStarAgent implements Agent {
         this.goalState = this.board.getGoalState();
         this.heuristic = heuristic;
         this.exploredNodes = 0;
-
     }
 
     /**

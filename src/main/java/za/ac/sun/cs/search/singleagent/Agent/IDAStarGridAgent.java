@@ -11,17 +11,19 @@ public class IDAStarGridAgent implements Agent {
     private ImplicitGrid grid;
     private boolean[][] initialState;
     private Heuristic heuristic;
+    private int exploredNodes;
+    private int initalEstimate;
 
     public IDAStarGridAgent(boolean[][] configuration, short[] playerPosition, short[] goalPosition,
             Heuristic heuristic) {
         this.initialState = configuration;
         this.grid = new ImplicitGrid(initialState, playerPosition, goalPosition);
         this.heuristic = heuristic;
-
+        this.exploredNodes = 0;
     }
 
     /**
-     * Solve the given N-puzzle using IDA* on an implicit tree.
+     * Solve the given Path Finder using IDA* on an implicit tree.
      *
      * @return An array of {@link Direction}s that when applied to the initial state
      *         result in the goal state.
@@ -30,6 +32,7 @@ public class IDAStarGridAgent implements Agent {
     public Direction[] solve() {
         Stack<Direction> path = new Stack<>();
         int bound = heuristic.getHeuristicCostEstimate(grid);
+        initalEstimate = bound;
         boolean found = false;
 
         while (!found) {
@@ -61,6 +64,7 @@ public class IDAStarGridAgent implements Agent {
                 continue;
             }
             grid.makeMove(move);
+            exploredNodes++;
             grid.setPreviousMove(move);
             path.add(move);
             int t = search(grid, path, g + 1, bound);
@@ -77,5 +81,13 @@ public class IDAStarGridAgent implements Agent {
         }
 
         return min;
+    }
+
+    public int getInitialEstimate() {
+        return initalEstimate;
+    }
+
+    public int getExploredNodes() {
+        return exploredNodes;
     }
 }

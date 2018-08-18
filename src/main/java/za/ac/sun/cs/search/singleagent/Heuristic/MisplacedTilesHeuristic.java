@@ -2,8 +2,10 @@ package za.ac.sun.cs.search.singleagent.Heuristic;
 
 import za.ac.sun.cs.search.singleagent.Domain.Domain;
 
+/* Misplaced tiles heuristic. */
+
 public class MisplacedTilesHeuristic implements Heuristic {
-   
+
     @Override
     public int getHeuristicCostEstimate(Domain domain) {
         int cost = 0;
