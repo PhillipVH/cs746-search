@@ -1,9 +1,9 @@
 package za.ac.sun.cs.search.singleagent;
 
 import za.ac.sun.cs.search.singleagent.Agent.AStarGridAgent;
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Grid.ExplicitGrid;
-import za.ac.sun.cs.search.singleagent.Heuristic.EucledianHeuristic;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Grid.ExplicitGrid;
+import za.ac.sun.cs.search.singleagent.Heuristic.EuclideanHeuristic;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -105,7 +105,7 @@ public class GridRepl {
         short[] originalPlayerPos = Arrays.copyOf(playerPos, playerPos.length);
 
         /* Create the agent and get the solution. */
-        AStarGridAgent aStarGridAgent = new AStarGridAgent(Arrays.copyOf(configuration, configuration.length), playerPos, goalPos, new EucledianHeuristic());
+        AStarGridAgent aStarGridAgent = new AStarGridAgent(Arrays.copyOf(configuration, configuration.length), playerPos, goalPos, new EuclideanHeuristic());
 
         Direction[] solution = aStarGridAgent.solve();
 
