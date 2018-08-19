@@ -1,7 +1,7 @@
-package za.ac.sun.cs.search.singleagent.Grid;
+package za.ac.sun.cs.search.singleagent.Domain.Grid;
 
 import za.ac.sun.cs.search.singleagent.Domain.Domain;
-import za.ac.sun.cs.search.singleagent.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
 
 import java.util.ArrayList;
 import java.util.Arrays;

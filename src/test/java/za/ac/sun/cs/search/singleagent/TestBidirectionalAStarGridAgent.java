@@ -1,10 +1,9 @@
 package za.ac.sun.cs.search.singleagent;
 
-import org.junit.Assert;
 import org.junit.Test;
 import za.ac.sun.cs.search.singleagent.Agent.BidirectionalAStarGridAgent;
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Heuristic.EucledianHeuristic;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Heuristic.EuclideanHeuristic;
 
 import java.util.Arrays;
 
@@ -19,7 +18,7 @@ public class TestBidirectionalAStarGridAgent {
         short[] goalPosition = { 0, 1 };
 
         BidirectionalAStarGridAgent biDirectionalAstarAgent = new BidirectionalAStarGridAgent(configuration,
-                playerPosition, goalPosition, true, new EucledianHeuristic());
+                playerPosition, goalPosition, true, new EuclideanHeuristic());
         Direction[] solution = biDirectionalAstarAgent.solve();
 
         System.out.println(Arrays.toString(solution));

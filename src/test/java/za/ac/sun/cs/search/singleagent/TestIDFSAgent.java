@@ -2,8 +2,8 @@ package za.ac.sun.cs.search.singleagent;
 
 import org.junit.Test;
 import za.ac.sun.cs.search.singleagent.Agent.IDFSAgent;
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Board.ImplicitBoard;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Board.ImplicitBoard;
 
 public class TestIDFSAgent {
 

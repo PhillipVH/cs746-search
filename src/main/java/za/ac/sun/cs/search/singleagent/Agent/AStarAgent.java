@@ -1,17 +1,20 @@
 package za.ac.sun.cs.search.singleagent.Agent;
 
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Board.ExplicitBoard;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Board.ExplicitBoard;
 import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
 
 import java.util.*;
 
-import static za.ac.sun.cs.search.singleagent.Board.Direction.*;
+import static za.ac.sun.cs.search.singleagent.Domain.Board.Direction.*;
 
 public class AStarAgent implements Agent {
     private short[] initialState;
 
     private ExplicitBoard startBoard;
+
+    /* A counter to keep track of the number of nodes explored. */
+    private int exploredNodes = 0;
 
     public AStarAgent(short[] configuration, Heuristic heuristic) {
         this.initialState = Arrays.copyOf(configuration, configuration.length);
@@ -23,7 +26,6 @@ public class AStarAgent implements Agent {
 
         return Integer.compare(v, 0);
     };
-
 
     /**
      * Solve the given N-puzzle using A* on an explicit tree.
@@ -45,8 +47,6 @@ public class AStarAgent implements Agent {
 
         openSet.add(startBoard);
 
-        /* A counter to keep track of the number of nodes explored. */
-        long exploredNodes = 0L;
 
         /* While there is still world to explore, explore it! */
         while (!openSet.isEmpty()) {
@@ -59,7 +59,6 @@ public class AStarAgent implements Agent {
 
             /* If this node is terminal, we have found the solution. */
             if (board.isTerminal()) {
-                System.out.println("Nodes Explored: " + exploredNodes);
                 return constructPath(board);
             }
 
@@ -160,6 +159,13 @@ public class AStarAgent implements Agent {
         }
         return null;
 
+    }
+
+    /**
+     * @return The number of nodes explored by this agent during the search.
+     */
+    public int getExploredNodes() {
+        return this.exploredNodes;
     }
 
 

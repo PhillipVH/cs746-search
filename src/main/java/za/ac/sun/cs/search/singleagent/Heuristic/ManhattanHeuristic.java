@@ -2,6 +2,8 @@ package za.ac.sun.cs.search.singleagent.Heuristic;
 
 import za.ac.sun.cs.search.singleagent.Domain.Domain;
 
+/* Manhattan distance heuristic. */
+
 public class ManhattanHeuristic implements Heuristic {
 
     @Override

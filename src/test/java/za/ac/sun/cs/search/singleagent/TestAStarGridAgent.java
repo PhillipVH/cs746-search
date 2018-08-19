@@ -1,12 +1,9 @@
 package za.ac.sun.cs.search.singleagent;
 
-import org.junit.Assert;
 import org.junit.Test;
 import za.ac.sun.cs.search.singleagent.Agent.AStarGridAgent;
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Grid.ExplicitGrid;
-import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
-import za.ac.sun.cs.search.singleagent.Heuristic.EucledianHeuristic;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Heuristic.EuclideanHeuristic;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +21,7 @@ public class TestAStarGridAgent {
         short[] goalPosition = { 0, 1 };
 
         AStarGridAgent astarAgent = new AStarGridAgent(configuration, playerPosition, goalPosition,
-                new EucledianHeuristic());
+                new EuclideanHeuristic());
         Direction[] solution = astarAgent.solve();
 
         System.out.println(Arrays.toString(solution));

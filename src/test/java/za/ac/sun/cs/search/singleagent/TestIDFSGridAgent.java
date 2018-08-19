@@ -2,8 +2,8 @@ package za.ac.sun.cs.search.singleagent;
 
 import org.junit.Test;
 import za.ac.sun.cs.search.singleagent.Agent.IDFSGridAgent;
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Grid.ImplicitGrid;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Grid.ImplicitGrid;
 
 public class TestIDFSGridAgent {
 
