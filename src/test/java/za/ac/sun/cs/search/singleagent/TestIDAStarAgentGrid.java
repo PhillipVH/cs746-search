@@ -51,4 +51,6 @@ public class TestIDAStarAgentGrid {
         System.out.println("Explored: " + idaStarAgent.getExploredNodes());
 
     }
+
+    
 }

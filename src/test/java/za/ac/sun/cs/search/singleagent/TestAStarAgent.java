@@ -7,6 +7,7 @@ import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
 import za.ac.sun.cs.search.singleagent.Heuristic.ManhattanHeuristic;
 import za.ac.sun.cs.search.singleagent.Heuristic.MisplacedTilesHeuristic;
 import za.ac.sun.cs.search.singleagent.Heuristic.LinearConflictHeuristic;
+import za.ac.sun.cs.search.singleagent.Heuristic.NullHeuristic;
 
 import java.util.Arrays;
 
@@ -56,7 +57,7 @@ public class TestAStarAgent {
     }
 
     @Test
-    public void hard8Puzzle() {
+    public void MisplacedTilesTest() {
         short configuration[] = { 8, 6, 7, 2, 5, 4, 3, 0, 1 };
 
         AStarAgent aStarAgent = new AStarAgent(configuration, new MisplacedTilesHeuristic());
@@ -72,9 +73,8 @@ public class TestAStarAgent {
 
     @Test
     public void manhattanDistanceTest() throws Exception {
-        /* TODO Will probably be passed in as an argument. */
 
-        short configuration[] = { 8, 7, 5, 3, 0, 1, 4, 2, 6 };
+        short configuration[] = { 8, 6, 7, 2, 5, 4, 3, 0, 1 };
 
         AStarAgent aStarAgent = new AStarAgent(configuration, new ManhattanHeuristic());
         Direction[] path = aStarAgent.solve();
@@ -83,13 +83,26 @@ public class TestAStarAgent {
 
     }
 
+ 
+
     @Test
     public void linearConflictTest() throws Exception {
-        /* TODO Will probably be passed in as an argument. */
 
-        short configuration[] = { 8, 7, 5, 3, 0, 1, 4, 2, 6 };
+        short configuration[] = { 8, 6, 7, 2, 5, 4, 3, 0, 1 };
 
         AStarAgent aStarAgent = new AStarAgent(configuration, new LinearConflictHeuristic());
+        Direction[] path = aStarAgent.solve();
+
+        System.out.println("Explored: " + aStarAgent.getExploredNodes());
+
+    }
+
+    @Test
+    public void NullTest() throws Exception {
+
+        short configuration[] = { 8, 6, 7, 2, 5, 4, 3, 0, 1 };
+
+        AStarAgent aStarAgent = new AStarAgent(configuration, new NullHeuristic());
         Direction[] path = aStarAgent.solve();
 
         System.out.println("Explored: " + aStarAgent.getExploredNodes());

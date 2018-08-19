@@ -8,15 +8,13 @@ import za.ac.sun.cs.search.singleagent.Domain.Board.ImplicitBoard;
 public class TestIDFSAgent {
 
     @Test
-    public void smokeTest() throws Exception {
-        /* TODO Will probably be passed in as an argument. */
-        short configuration[] = { 8, 7, 5, 3, 0, 1, 4, 2, 6 };
-        short configuration2[] = { 8, 7, 5, 3, 0, 1, 4, 2, 6 };
+    public void Hard8Test() {
+        short configuration[] = { 8, 6, 7, 2, 5, 4, 3, 0, 1 };
 
         IDFSAgent idfsAgent = new IDFSAgent(configuration);
-        Direction[] path = idfsAgent.solve();
 
-        ImplicitBoard board = new ImplicitBoard(configuration2);
-        board.visualizePath(path);
+        Direction[] solution = idfsAgent.solve();
+
+        System.out.println("Explored Nodes: " + idfsAgent.getExploredNodes());
     }
 }

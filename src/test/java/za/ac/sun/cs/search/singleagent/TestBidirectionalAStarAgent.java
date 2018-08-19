@@ -6,6 +6,8 @@ import za.ac.sun.cs.search.singleagent.Agent.BidirectionalAStarAgent;
 import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
 import za.ac.sun.cs.search.singleagent.Heuristic.ManhattanHeuristic;
 import za.ac.sun.cs.search.singleagent.Heuristic.MisplacedTilesHeuristic;
+import za.ac.sun.cs.search.singleagent.Heuristic.LinearConflictHeuristic;
+import za.ac.sun.cs.search.singleagent.Heuristic.NullHeuristic;
 
 import java.util.Arrays;
 
@@ -40,16 +42,51 @@ public class TestBidirectionalAStarAgent {
     }
 
     @Test
-    public void hard8Puzzle() {
-        short configuration[] = {8, 6, 7, 2, 5, 4, 3, 0, 1};
+    public void MisplacedTilesTest() {
+        short configuration[] = { 8, 6, 7, 2, 5, 4, 3, 0, 1 };
 
-        BidirectionalAStarAgent bidirectionalAStarAgent = new BidirectionalAStarAgent(configuration, true, new ManhattanHeuristic());
+        BidirectionalAStarAgent bidirectionalAStarAgent = new BidirectionalAStarAgent(configuration, true, new MisplacedTilesHeuristic());
 
         Direction[] solution = bidirectionalAStarAgent.solve();
 
-        Assert.assertEquals(27, solution.length);
+        System.out.println("Explored Nodes: " + bidirectionalAStarAgent.getExploredNodes());
+    }
 
-        System.out.println(Arrays.toString(solution));
-        System.out.println("Solution Cost: " + solution.length);
+    @Test
+    public void manhattanDistanceTest() throws Exception {
+
+        short configuration[] = { 8, 6, 7, 2, 5, 4, 3, 0, 1 };
+
+        BidirectionalAStarAgent bidirectionalAStarAgent = new BidirectionalAStarAgent(configuration, true, new ManhattanHeuristic());
+        Direction[] path = bidirectionalAStarAgent.solve();
+
+        System.out.println("Explored: " + bidirectionalAStarAgent.getExploredNodes());
+
+    }
+
+ 
+
+    @Test
+    public void linearConflictTest() throws Exception {
+
+        short configuration[] = { 8, 6, 7, 2, 5, 4, 3, 0, 1 };
+
+        BidirectionalAStarAgent bidirectionalAStarAgent = new BidirectionalAStarAgent(configuration, true, new LinearConflictHeuristic());
+        Direction[] path = bidirectionalAStarAgent.solve();
+
+        System.out.println("Explored: " + bidirectionalAStarAgent.getExploredNodes());
+
+    }
+
+    @Test
+    public void NullTest() throws Exception {
+
+        short configuration[] = { 8, 6, 7, 2, 5, 4, 3, 0, 1 };
+
+        BidirectionalAStarAgent bidirectionalAStarAgent = new BidirectionalAStarAgent(configuration, true, new NullHeuristic());
+        Direction[] path = bidirectionalAStarAgent.solve();
+
+        System.out.println("Explored: " + bidirectionalAStarAgent.getExploredNodes());
+
     }
 }
