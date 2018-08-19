@@ -1,9 +1,8 @@
-package za.ac.sun.cs.search.singleagent;
+package za.ac.sun.cs.search.singleagent.Domain.Grid;
 
 import za.ac.sun.cs.search.singleagent.Agent.AStarGridAgent;
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Grid.ExplicitGrid;
-import za.ac.sun.cs.search.singleagent.Heuristic.EucledianHeuristic;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Heuristic.EuclideanHeuristic;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -35,7 +34,7 @@ public class GridRepl {
         }
 
         /* Place the starting and ending position. */
-        System.out.println("Enter player x-position: ");
+        System.out.println("Enter player row-number: ");
         int playerX = 0;
         try {
             playerX = Integer.parseInt(input.readLine());
@@ -43,7 +42,7 @@ public class GridRepl {
             e.printStackTrace();
         }
 
-        System.out.println("Enter player y-position: ");
+        System.out.println("Enter player column-number: ");
         int playerY = 0;
         try {
             playerY = Integer.parseInt(input.readLine());
@@ -51,7 +50,7 @@ public class GridRepl {
             e.printStackTrace();
         }
 
-        System.out.println("Enter goal x-position: ");
+        System.out.println("Enter goal row-position: ");
         int goalX = 0;
         try {
             goalX = Integer.parseInt(input.readLine());
@@ -59,7 +58,7 @@ public class GridRepl {
             e.printStackTrace();
         }
 
-        System.out.println("Enter goal y-position: ");
+        System.out.println("Enter goal column-position: ");
         int goalY = 0;
         try {
             goalY = Integer.parseInt(input.readLine());
@@ -69,7 +68,7 @@ public class GridRepl {
 
         /* Read in the obstacles */
         while (true) {
-            System.out.println("Enter x-start of obstacle (or skip to continue): ");
+            System.out.println("Enter the range of rows covered by the obstacle (or skip to continue): ");
             int obstacleX = 0;
             int obstacleXEnd = 0;
             try {
@@ -79,7 +78,7 @@ public class GridRepl {
                 break;
             }
 
-            System.out.println("Enter y-start of obstacle (or skip to continue): ");
+            System.out.println("Enter the range of columns covered by the obstacle (or skip to continue): ");
             int obstacleY = 0;
             int obstacleYEnd = 0;
             try {
@@ -105,7 +104,7 @@ public class GridRepl {
         short[] originalPlayerPos = Arrays.copyOf(playerPos, playerPos.length);
 
         /* Create the agent and get the solution. */
-        AStarGridAgent aStarGridAgent = new AStarGridAgent(Arrays.copyOf(configuration, configuration.length), playerPos, goalPos, new EucledianHeuristic());
+        AStarGridAgent aStarGridAgent = new AStarGridAgent(Arrays.copyOf(configuration, configuration.length), playerPos, goalPos, new EuclideanHeuristic());
 
         Direction[] solution = aStarGridAgent.solve();
 
@@ -165,11 +164,9 @@ public class GridRepl {
                 }
 
                 if (isWalkable) {
-                    System.out.print("_\t");
-                    continue;
+                    System.out.print(".\t");
                 } else {
                     System.out.print("O\t");
-                    continue;
                 }
 
             }
