@@ -3,14 +3,14 @@ package za.ac.sun.cs.search.singleagent;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Board.ExplicitBoard;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Board.ExplicitBoard;
 import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
 import za.ac.sun.cs.search.singleagent.Heuristic.MisplacedTilesHeuristic;
 
 import java.util.*;
 
-import static za.ac.sun.cs.search.singleagent.Board.Direction.*;
+import static za.ac.sun.cs.search.singleagent.Domain.Board.Direction.*;
 
 public class TestExplicitBoard {
 

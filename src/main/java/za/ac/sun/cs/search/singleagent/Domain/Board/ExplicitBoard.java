@@ -1,14 +1,12 @@
-package za.ac.sun.cs.search.singleagent.Grid;
+package za.ac.sun.cs.search.singleagent.Domain.Board;
 
 import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
-import za.ac.sun.cs.search.singleagent.Grid.ExplicitGrid;
-import za.ac.sun.cs.search.singleagent.Board.Direction;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 
-public class ExplicitGrid extends Grid {
-    private ExplicitGrid parent;
+public class ExplicitBoard extends Board {
+    private ExplicitBoard parent;
     private int costFromStart;
     private int estimatedCost;
     private int cost;
@@ -20,9 +18,23 @@ public class ExplicitGrid extends Grid {
      *
      * @param initialState An array of the initial tile configuration, as read from
      *                     left to right and top to bottom.
+     * @param Heuristic    Heuristic function which will be used to evaluate costs.
      */
-    public ExplicitGrid(boolean[][] initialState, short[] playerPosition, short[] goalPosition, Heuristic heuristic) {
-        super(initialState, playerPosition, goalPosition);
+    public ExplicitBoard(short[] initialState, Heuristic heuristic) {
+        super(initialState);
+        this.parent = null;
+        this.heuristic = heuristic;
+    }
+
+    /**
+     * Initialize the internal state of the board and calculate the size of it. This
+     * constructor initializes the goal state for us.
+     *
+     * @param initialState An array of the initial tile configuration, as read from
+     *                     left to right and top to bottom.
+     */
+    public ExplicitBoard(short[] initialState, short[] goalState, Heuristic heuristic) {
+        super(initialState, goalState);
         this.parent = null;
         this.heuristic = heuristic;
     }
@@ -33,18 +45,18 @@ public class ExplicitGrid extends Grid {
             return true;
         }
 
-        if (!(o instanceof ExplicitGrid)) {
+        if (!(o instanceof ExplicitBoard)) {
             return false;
         }
 
-        return Arrays.equals(this.getPlayerPosition(), ((ExplicitGrid) o).getPlayerPosition());
+        return Arrays.equals(this.getCurrentState(), ((ExplicitBoard) o).getCurrentState());
     }
 
-    public ExplicitGrid getParent() {
+    public ExplicitBoard getParent() {
         return parent;
     }
 
-    public void setParent(ExplicitGrid parent) {
+    public void setParent(ExplicitBoard parent) {
         this.parent = parent;
     }
 
@@ -71,14 +83,14 @@ public class ExplicitGrid extends Grid {
      *
      * @return All the reachable states from this node.
      */
-    public LinkedList<ExplicitGrid> getNeighbors() {
+    public LinkedList<ExplicitBoard> getNeighbors() {
         /* Start by getting the moves. */
         Direction[] legalMoves = getLegalMoves();
-        LinkedList<ExplicitGrid> neighbors = new LinkedList<>();
+        LinkedList<ExplicitBoard> neighbors = new LinkedList<>();
 
         /* Take each move, apply it to the board, and add it to the list. */
         for (Direction move : legalMoves) {
-            ExplicitGrid neighbor = (ExplicitGrid) this.makeMove(move);
+            ExplicitBoard neighbor = (ExplicitBoard) this.makeMove(move);
 
             /* This board is the parent of the neighbor. */
             neighbor.setParent(this);
@@ -94,24 +106,31 @@ public class ExplicitGrid extends Grid {
         return neighbors;
     }
 
-    public ExplicitGrid makeMove(Direction move) {
-        short[] player = Arrays.copyOf(this.getPlayerPosition(), this.getPlayerPosition().length);
+    public ExplicitBoard makeMove(Direction move) {
+        short[] emptyPosition = this.getEmptyTilePosition();
+
         switch (move) {
         case UP:
-            player[0] = (short) (player[0] - 1);
-            return new ExplicitGrid(this.getGrid(), player, this.getGoalState(), this.heuristic);
+            return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
         case DOWN:
-            player[0] = (short) (player[0] + 1);
-            return new ExplicitGrid(this.getGrid(), player, this.getGoalState(), this.heuristic);
+            return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] + 1, emptyPosition[1]);
         case LEFT:
-            player[1] = (short) (player[1] - 1);
-            return new ExplicitGrid(this.getGrid(), player, this.getGoalState(), this.heuristic);
+            return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] - 1);
         case RIGHT:
-            player[1] = (short) (player[1] + 1);
-            return new ExplicitGrid(this.getGrid(), player, this.getGoalState(), this.heuristic);
+            return swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
         default:
             return null;
         }
+    }
+
+    public ExplicitBoard swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
+        int tempTile = this.getAt(toRow, toCol);
+        ExplicitBoard temp = new ExplicitBoard(Arrays.copyOf(this.getCurrentState(), this.getCurrentState().length),
+                this.goalState, heuristic);
+        temp.putAt(toRow, toCol, (short) 0);
+        temp.putAt(fromRow, fromCol, (short) tempTile);
+
+        return temp;
     }
 
     public void visualizePath(Direction[] path) throws Exception {
@@ -128,6 +147,6 @@ public class ExplicitGrid extends Grid {
 
     @Override
     public int hashCode() {
-        return Arrays.hashCode(this.getGrid());
+        return Arrays.hashCode(this.currentState);
     }
 }

@@ -1,6 +1,7 @@
 package za.ac.sun.cs.search.singleagent.Heuristic;
 
 import za.ac.sun.cs.search.singleagent.Domain.Domain;
+/* Misplaced Tiles heuristic, which is inadmissable because we include the empty tile. */
 
 public class MisplacedInadmissableHeuristic implements Heuristic {
 

@@ -1,13 +1,11 @@
 package za.ac.sun.cs.search.singleagent;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.Assert;
 import za.ac.sun.cs.search.singleagent.Agent.IDAStarAgent;
-import za.ac.sun.cs.search.singleagent.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
 import za.ac.sun.cs.search.singleagent.Heuristic.ManhattanHeuristic;
-import za.ac.sun.cs.search.singleagent.Heuristic.LinearConflictHeuristic;
 
 public class TestKorf {
 

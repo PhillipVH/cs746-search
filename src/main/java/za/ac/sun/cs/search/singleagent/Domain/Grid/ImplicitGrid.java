@@ -1,16 +1,27 @@
-package za.ac.sun.cs.search.singleagent.Board;
+package za.ac.sun.cs.search.singleagent.Domain.Grid;
 
-public class ImplicitBoard extends Board {
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+
+public class ImplicitGrid extends Grid {
     protected Direction previousMove;
 
     /**
-     * Initialize the internal state of the board and calculate the size of it.
+     * Initialize the internal state of the grid and calculate the size of it. This
+     * constructor initializes the goal state for us.
      *
-     * @param initialState An array of the initial tile configuration, as read from
-     *                     left to right and top to bottom.
+     * @param initialState   An array of the initial grid configuration, as read
+     *                       from left to right and top to bottom.
+     * 
+     * @param playerPosition Position of the player.
+     * 
+     * @param goalPosition   Position of the goal.
+     * 
+     * @param Heuristic      Heuristic function which will be used to evaluate
+     *                       costs.
+     * 
      */
-    public ImplicitBoard(short[] initialState) {
-        super(initialState);
+    public ImplicitGrid(boolean[][] initialState, short[] playerPosition, short[] goalPosition) {
+        super(initialState, playerPosition, goalPosition);
         this.previousMove = null;
     }
 
@@ -30,19 +41,19 @@ public class ImplicitBoard extends Board {
     }
 
     public void makeMove(Direction move) {
-        short[] emptyPosition = this.getEmptyTilePosition();
+        short[] player = this.getPlayerPosition();
         switch (move) {
         case UP:
-            swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
+            this.setPlayerPostion(player[0] - 1, player[1]);
             break;
         case DOWN:
-            swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] + 1, emptyPosition[1]);
+            this.setPlayerPostion(player[0] + 1, player[1]);
             break;
         case LEFT:
-            swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] - 1);
+            this.setPlayerPostion(player[0], player[1] - 1);
             break;
         case RIGHT:
-            swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
+            this.setPlayerPostion(player[0], player[1] + 1);
             break;
         default:
             break;
@@ -68,14 +79,6 @@ public class ImplicitBoard extends Board {
         }
     }
 
-    public void swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
-        int tempTile = this.getAt(toRow, toCol);
-        this.putAt(toRow, toCol, (short) 0);
-        this.putAt(fromRow, fromCol, (short) tempTile);
-
-        return;
-    }
-
     public Direction getPrevious() {
         return previousMove;
     }
@@ -85,7 +88,7 @@ public class ImplicitBoard extends Board {
     }
 
     public void visualizePath(Direction[] path) throws Exception {
-        System.out.println("Initial Board:");
+        System.out.println("Initial Grid:");
         System.out.println(this);
         for (Direction move : path) {
             System.out.println("Move: " + move);

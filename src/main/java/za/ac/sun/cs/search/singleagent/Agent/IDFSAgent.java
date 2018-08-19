@@ -1,24 +1,23 @@
 package za.ac.sun.cs.search.singleagent.Agent;
 
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Board.ImplicitBoard;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Board.ImplicitBoard;
 
 import java.util.Stack;
 
 public class IDFSAgent implements Agent {
     private short[] initialState;
-    private short[] goalState;
     private ImplicitBoard board;
+    private int exploredNodes;
 
     public IDFSAgent(short[] configuration) {
         this.initialState = configuration;
         this.board = new ImplicitBoard(initialState);
-        this.goalState = this.board.getGoalState();
-
+        this.exploredNodes = 0;
     }
 
     /**
-     * Solve the given N-puzzle using IDA* on an implicit tree.
+     * Solve the given N-puzzle using IDFS on an implicit tree.
      *
      * @return An array of {@link Direction}s that when applied to the initial state
      *         result in the goal state.
@@ -64,10 +63,14 @@ public class IDFSAgent implements Agent {
                 }
                 path.add(move);
                 board.makeMove(move);
+                exploredNodes++;
                 board.setPreviousMove(move);
                 dfs(board, depth - 1, path, result);
-                if (result.getFound()) {return;}
-                else {result.setRemaining(true);}
+                if (result.getFound()) {
+                    return;
+                } else {
+                    result.setRemaining(true);
+                }
 
                 board.undoMove(path.pop());
                 board.setPreviousMove(previousMove);
@@ -82,6 +85,10 @@ public class IDFSAgent implements Agent {
 
     public ImplicitBoard getBoard() {
         return board;
+    }
+
+    public int getExploredNodes() {
+        return exploredNodes;
     }
 
     private class DFSResult {

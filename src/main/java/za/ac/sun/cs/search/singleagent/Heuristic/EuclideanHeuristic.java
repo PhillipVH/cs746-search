@@ -2,7 +2,18 @@ package za.ac.sun.cs.search.singleagent.Heuristic;
 
 import za.ac.sun.cs.search.singleagent.Domain.Domain;
 
-public class EucledianHeuristic implements Heuristic {
+/* Eucledian distance heuristic, calcualtes the straight line distance between the player and the goal */
+
+public class EuclideanHeuristic implements Heuristic {
+    private double epsilon;
+
+    public EuclideanHeuristic(double epsilon) {
+        this.epsilon = epsilon;
+    }
+
+    public EuclideanHeuristic() {
+        this.epsilon = 1;
+    }
 
     @Override
     public int getHeuristicCostEstimate(Domain domain) {
@@ -12,7 +23,7 @@ public class EucledianHeuristic implements Heuristic {
         double xCost = Math.pow((playerPosition[0] - goalPosition[0]), 2);
         double yCost = Math.pow((playerPosition[1] - goalPosition[1]), 2);
 
-        return (int) Math.sqrt(xCost + yCost);
+        return (int) (this.epsilon * Math.sqrt(xCost + yCost));
 
     }
 }

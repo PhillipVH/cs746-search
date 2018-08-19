@@ -1,7 +1,7 @@
 package za.ac.sun.cs.search.singleagent.Agent;
 
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Grid.ImplicitGrid;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Grid.ImplicitGrid;
 
 import java.util.Stack;
 
@@ -9,15 +9,16 @@ public class IDFSGridAgent implements Agent {
 
     private ImplicitGrid grid;
     private boolean[][] initialState;
+    private int exploredNodes;
 
     public IDFSGridAgent(boolean[][] configuration, short[] playerPosition, short[] goalPosition) {
         this.initialState = configuration;
         this.grid = new ImplicitGrid(initialState, playerPosition, goalPosition);
-
+        this.exploredNodes = 0;
     }
 
     /**
-     * Solve the given N-puzzle using IDA* on an implicit tree.
+     * Solve the given Path Finder using IDFS on an implicit tree.
      *
      * @return An array of {@link Direction}s that when applied to the initial state
      *         result in the goal state.
@@ -63,6 +64,7 @@ public class IDFSGridAgent implements Agent {
                 }
                 path.add(move);
                 grid.makeMove(move);
+                exploredNodes++;
                 grid.setPreviousMove(move);
                 dfs(grid, depth - 1, path, result);
                 if (result.getFound()) {
@@ -84,6 +86,10 @@ public class IDFSGridAgent implements Agent {
 
     public ImplicitGrid getBoard() {
         return grid;
+    }
+
+    public int getExploredNodes() {
+        return exploredNodes;
     }
 
     private class DFSResult {

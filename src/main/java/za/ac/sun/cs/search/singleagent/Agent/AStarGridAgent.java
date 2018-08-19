@@ -1,17 +1,21 @@
 package za.ac.sun.cs.search.singleagent.Agent;
 
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Grid.ExplicitGrid;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Grid.ExplicitGrid;
 import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
 
 import java.util.*;
 
-import static za.ac.sun.cs.search.singleagent.Board.Direction.*;
+import static za.ac.sun.cs.search.singleagent.Domain.Board.Direction.*;
 
 public class AStarGridAgent implements Agent {
     private boolean[][] initialState;
 
     private ExplicitGrid startBoard;
+
+
+    /* A counter to keep track of the number of nodes explored. */
+    int exploredNodes = 0;
 
     public AStarGridAgent(boolean[][] configuration, short[] playerPosition, short[] goalPosition,
             Heuristic heuristic) {
@@ -26,7 +30,7 @@ public class AStarGridAgent implements Agent {
     };
 
     /**
-     * Solve the given N-puzzle using A* on an explicit tree.
+     * Solve the given Path Finder using A* on an explicit tree.
      *
      * @return An array of {@link Direction}s that when applied to the initial state
      *         result in the goal state.
@@ -45,8 +49,6 @@ public class AStarGridAgent implements Agent {
 
         openSet.add(startBoard);
 
-        /* A counter to keep track of the number of nodes explored. */
-        long exploredNodes = 0L;
 
         /* While there is still world to explore, explore it! */
         while (!openSet.isEmpty()) {
@@ -160,6 +162,13 @@ public class AStarGridAgent implements Agent {
         }
         return null;
 
+    }
+
+    /**
+     * @return The number of nodes explored by this agent.
+     */
+    public int getExploredNodes() {
+        return this.exploredNodes;
     }
 
 }

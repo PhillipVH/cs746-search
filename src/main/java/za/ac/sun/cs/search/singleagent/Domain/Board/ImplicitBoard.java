@@ -1,18 +1,16 @@
-package za.ac.sun.cs.search.singleagent.Grid;
+package za.ac.sun.cs.search.singleagent.Domain.Board;
 
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-
-public class ImplicitGrid extends Grid {
+public class ImplicitBoard extends Board {
     protected Direction previousMove;
 
     /**
-     * Initialize the internal state of the grid and calculate the size of it.
+     * Initialize the internal state of the board and calculate the size of it.
      *
      * @param initialState An array of the initial tile configuration, as read from
      *                     left to right and top to bottom.
      */
-    public ImplicitGrid(boolean[][] initialState, short[] playerPosition, short[] goalPosition) {
-        super(initialState, playerPosition, goalPosition);
+    public ImplicitBoard(short[] initialState) {
+        super(initialState);
         this.previousMove = null;
     }
 
@@ -32,19 +30,19 @@ public class ImplicitGrid extends Grid {
     }
 
     public void makeMove(Direction move) {
-        short[] player = this.getPlayerPosition();
+        short[] emptyPosition = this.getEmptyTilePosition();
         switch (move) {
         case UP:
-            this.setPlayerPostion(player[0] - 1, player[1]);
+            swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] - 1, emptyPosition[1]);
             break;
         case DOWN:
-            this.setPlayerPostion(player[0] + 1, player[1]);
+            swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0] + 1, emptyPosition[1]);
             break;
         case LEFT:
-            this.setPlayerPostion(player[0], player[1] - 1);
+            swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] - 1);
             break;
         case RIGHT:
-            this.setPlayerPostion(player[0], player[1] + 1);
+            swapTiles(emptyPosition[0], emptyPosition[1], emptyPosition[0], emptyPosition[1] + 1);
             break;
         default:
             break;
@@ -70,6 +68,14 @@ public class ImplicitGrid extends Grid {
         }
     }
 
+    public void swapTiles(int fromRow, int fromCol, int toRow, int toCol) {
+        int tempTile = this.getAt(toRow, toCol);
+        this.putAt(toRow, toCol, (short) 0);
+        this.putAt(fromRow, fromCol, (short) tempTile);
+
+        return;
+    }
+
     public Direction getPrevious() {
         return previousMove;
     }
@@ -79,7 +85,7 @@ public class ImplicitGrid extends Grid {
     }
 
     public void visualizePath(Direction[] path) throws Exception {
-        System.out.println("Initial Grid:");
+        System.out.println("Initial Board:");
         System.out.println(this);
         for (Direction move : path) {
             System.out.println("Move: " + move);

@@ -1,13 +1,12 @@
 package za.ac.sun.cs.search.singleagent.Agent;
 
-import za.ac.sun.cs.search.singleagent.Board.Direction;
-import za.ac.sun.cs.search.singleagent.Grid.ExplicitGrid;
+import za.ac.sun.cs.search.singleagent.Domain.Board.Direction;
+import za.ac.sun.cs.search.singleagent.Domain.Grid.ExplicitGrid;
 import za.ac.sun.cs.search.singleagent.Heuristic.Heuristic;
 
 import java.util.*;
-import java.util.logging.Logger;
 
-import static za.ac.sun.cs.search.singleagent.Board.Direction.*;
+import static za.ac.sun.cs.search.singleagent.Domain.Board.Direction.*;
 
 public class BidirectionalAStarGridAgent implements Agent {
     private boolean[][] initialState;
@@ -21,6 +20,9 @@ public class BidirectionalAStarGridAgent implements Agent {
 
     private short[] initialPlayerPosition;
     private short[] goalPosition;
+
+    /* A counter to keep track of the number of nodes explored. */
+    private int exploredNodes = 0;
 
     private Heuristic heuristic;
 
@@ -57,7 +59,7 @@ public class BidirectionalAStarGridAgent implements Agent {
     };
 
     /**
-     * Solve the given N-puzzle using A* on an explicit tree.
+     * Solve the given Path Finder using Bidirectional A* on an explicit tree.
      *
      * @return An array of {@link Direction}s that when applied to the initial state
      *         result in the goal state.
@@ -88,9 +90,6 @@ public class BidirectionalAStarGridAgent implements Agent {
         /* The searches get a change to run in round robin fashion. */
         PriorityQueue<ExplicitGrid> openSetRef = openSetForward;
         HashSet<ExplicitGrid> closedSetRef = closedSetForward;
-
-        /* A counter to keep track of the number of nodes explored. */
-        long exploredNodes = 0L;
 
         boolean forward = true;
 
@@ -351,6 +350,13 @@ public class BidirectionalAStarGridAgent implements Agent {
         }
         return null;
 
+    }
+
+    /**
+     * @return The number of nodes explored by this agent.
+     */
+    public int getExploredNodes() {
+        return this.exploredNodes;
     }
 
 }
