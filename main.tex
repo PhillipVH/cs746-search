@@ -1,0 +1,168 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage{booktabs}
+\usepackage{marginnote}
+\usepackage{amsmath}
+
+\title{AI Search: Assignment 1}
+\author{P. van Heerden\and Z. Mohamed}
+\date{August 2018}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+
+\section{Overview of implemented functionality}
+\subsection{Algorithms}
+The following \emph{algorithms} were implemented as part of the core assignment:
+\begin{itemize}
+    \item Depth-first iterative deepening (implicit)
+    \item A* (explicit, graph-search formulation)
+    \item Iterative deepening A* (implicit)
+    \item Dijkstra's Algorithm (as a special case of A*, via \texttt{NullHeuristic})
+    \item Bidirectional A* (explicit, graph-search formulation)
+\end{itemize}
+\subsection{Heuristics}\label{section:heuristics}
+The following \emph{heuristics} were implemented:
+\begin{itemize}
+    \item Misplaced Tiles
+    \item Manhattan Distance (with configurable admissibility)
+    \item Euclidean Distance (with configurable admissibility)
+    \item Linear Conflict
+\end{itemize}
+\subsection{Domains}
+Support for the following \emph{domains} have been implemented:
+\begin{itemize}
+    \item $N$-puzzle (with configurable $N$)
+    \item Path-finding on a $N\times N$ grid (with configurable $N$)
+\end{itemize}
+\subsection{Additional functionality}
+\begin{itemize}
+    \item The class \texttt{GridRepl} provides a real-eval-print-loop style interface for configuring a path-finding problem, and displaying the final solution in an intuitive manner\footnote{Future work could expand upon this functionality, perhaps as an API that can be exposed and then be consumed by visualization services.}.
+\end{itemize}
+
+\section{Architecture of the engine}
+\subsection{Domains as a core data structure}
+When looking to solve problems with search, it is crucial the problem space is efficiently and elegantly represented within our framework. This must be done without making it difficult for agents to operate on graphs of nodes, not needing any more domain specific information out of the data structure. Our approach to this is the \texttt{Domain} interface and it's two direct implementations, \texttt{Board} and \texttt{Grid}. Agents can make use of domains to generate and traverse the state space in a way that is sensible for the given domain, without the agents themselves having to do much more than provide a new constructor to support this.
+
+The \texttt{Board} domain is used to represent the state of a $N$-puzzle game. It has two concrete implementations, \texttt{ExplicitBoard} and \texttt{ImplicitBoard}. The explicit variant is used by agents that require an explicit graph of the state space (through parent pointers). In our framework, the algorithms that require such a representation are A*, Dijkstra's Algorithm, and Bidirectional A*. The implicit variant is required by the IDA* and IDDFS agents.
+
+The \texttt{Grid} domain is used to represent the state of a path-finding problem. Since the domain is different in the sense that the large grid remains static, having an explicit variant seems like a sub-optimal use of memory if the underlying grid was to be copied on each generation of a new neighbor. Instead, the authors' make a minor modification to the \texttt{ExplicitGrid} implementation, opting to maintain a reference to a single grid. After making this change, the \texttt{ExplicitGrid} implementation still complied with the behaviour required from agents using explicit data structures. 
+
+\subsection{Agents as domain-agnostic algorithms}
+Agents are the algorithms driving the search. They have been designed as to be as general as possible, in essence only requiring a new constructor to support a new domain\footnote{In the source tree, agents operating on different domains have been kept in separate translation units for clarity sake.}. All agents implement the \texttt{Agent} interface, and the naming convention of agents makes the mapping from agent to algorithm clear. IDA*, for example, is implemented by the agent \texttt{IDAStarAgent}. After a new agent is initialized, the \texttt{Agent\#solve()} method can be called, after which the agent will respond with an array of domain specific actions that must be taken to achieve the goal, if the goal can be achieved.
+
+\subsection{Heuristics as clairvoyant helpers}
+Heuristics drive informed search strategies. To allow the reuse of heuristics between agents, heuristics all implement the \texttt{Heuristic} interface and provide a single method, \texttt{Heuristic\#getHeuristicCostEstimate(Domain)}. All the heuristics---as listed in Section \ref{section:heuristics}---are implemented in this fashion. This also allows for easy comparison of heuristics, as they are usable by any agent (given that the heuristic makes sense for the domain the agent has been initialized for).
+
+\section{Experiments}
+\subsection{Verify IDA* against Korf}
+The authors verified the results from \cite{Korf1985} against our implementation of IDA*. In all the examples ran for comparison, both solutions provided the same initial estimate \marginnote{The authors' implementation was using the Manhattan distance heuristic, as was done by Korf during his investigation.} as well as the same length on the optimal paths. A comparison of nodes explored for the first ten examples can be found in Figure \ref{table:korf_comparison_nodes}. \\
+\begin{figure}[]
+    \centering
+    
+\begin{tabular}{@{}lrrr@{}} \toprule
+\multicolumn{3}{c}{\textbf{Nodes Explored}} \\ \cmidrule(r){2-3}
+\textbf{Example} & \textbf{Korf} & \textbf{The Authors} & \textbf{Author-Korf Ratio} \\ \midrule
+1 & 276361933 & 202882460 & 73\%\\
+2 & 15300442 & 11749617 & 77\% \\
+3 &565994203 & 479872314 & 85\% \\
+4&62643179 & 156396225  & \textbf{250\%} \\ 
+5&11020325&11111651 & \textbf{100\%}\\
+6&32201660&34191997 & \textbf{101\%}\\
+7&387138094&367429253& 94\%\\
+8&39118937&56395496 & \textbf{144\%}\\
+9&56395496&1632771 & 98\%\\
+10&198758703 &189933071 & 95\% \\\bottomrule
+\end{tabular}
+    \caption{Comparison of nodes explored by Korf and the authors' implementation of IDA*.}
+    \label{table:korf_comparison_nodes}
+\end{figure}
+
+
+\subsection{Algorithm results}
+
+\subsubsection{N-Puzzle Domain}
+The reference puzzle used in these results:
+\begin{itemize}
+    \item Optimal solution length = $27$
+\end{itemize}
+\begin{equation}
+\begin{Bmatrix}
+8 & 6 & 7 \\
+2 & 5 & 4 \\
+3 & 0 & 1
+\end{Bmatrix}
+\end{equation}
+
+\begin{figure}[]
+    \centering
+    
+\begin{tabular}{@{}lrrrr@{}} \toprule
+\multicolumn{3}{c}{\textbf{Nodes Explored}} \\ \cmidrule(r){2-5}
+\textbf{Algorithm}        & \textbf{Misplaced Tiles} & \textbf{Manhattan Distance} & \textbf{Null Heuristic} & \textbf{Linear Conflict} \\ \midrule
+\textbf{A*}               & 143093          & 14016              & 466983         & 20982           \\
+\textbf{IDA*}             & 691251          & 11597              & 34758347       & 51068           \\
+\textbf{Bidirectional A*} & 17414           & 1902               & 24881          & 2652            \\
+\textbf{IDDFS}            & 20092580        & 20092580           & 20092580       & 20092580       \\\bottomrule
+\end{tabular}
+    \caption{Comparison of nodes explored by different algorithms using different heuristics in the N-Puzzle domain.}
+    \label{table:N-Puzzle_comparison_nodes}
+\end{figure}
+
+\subsubsection{Path-finding Domain}
+The reference problem used in these results:
+\begin{itemize}
+    \item Optimal path = $62$
+    \item Grid size = $40$ $\times$ $40$
+    \item Player position =  \{$0$, $20$\}
+    \item Goal position =  \{39, 5\}
+    \item Horizontal obstacle positions = \{10, 2\} $\longrightarrow$ \{12, 30\} 
+    \item Vertical obstacle positions = \{0, 27\} $\longrightarrow$ \{10, 30\}
+\end{itemize}
+
+\begin{figure}[]
+    \centering
+    \hspace*{-2cm}
+\begin{tabular}{@{}lllllr@{}} \toprule
+\multicolumn{3}{c}{\textbf{Nodes Explored}} \\ \cmidrule(r){2-5}
+\textbf{Algorithm}& Manhattan Distance & Manhattan Distance Inadmissible & Null Heuristic & Euclidean Distance \\ \midrule
+A*               & 1381               & 306                             & 3090           & 1570               \\
+IDA*             & N/A                & N/A                             & N/A            & N/A                \\
+Bidirectional A* & 7275               & 1130                            & 22772          & 14096              \\
+IDDFS            & N/A                & N/A                             & N/A            & N/A                
+\end{tabular}
+    \caption{Comparison of nodes explored by different algorithms using different heuristics in the path-finding domain.}
+    \label{table:Pathfinder_comparison_nodes}
+\end{figure}
+
+\subsection{Remarks}
+
+\subsubsection{N/A results}
+In the path-finding experiment in Figure \ref{table:Pathfinder_comparison_nodes}, results for both iterative deepening algorithms have been omitted. This is due to the fact that the execution time for these algorithms may run for several hours or even days.
+
+\subsubsection{Linear conflict heuristic}
+The linear conflict heuristic is quite complex by nature. Once a conflict is identified we have to add the minimum number moves it would take to fix this conflict. This makes the algorithm complex, due to time constraints for every conflict we simply incremented our cost by two. In some cases this makes the heuristic inadmissible which is why it is outperformed by Manhattan distance when in theory the number of nodes explored by linear conflict is a subset of those explored by Manhattan distance.
+\subsubsection{Move ordering}
+With regards to our Korf experiment, in every example  more or less nodes were explored by us than what was explored by Korf. Since there is not much information about how Korf performed his experiment, with what little information given to us we have concluded that this was due to \emph{move ordering}. The order of which the legal moves are explored by us most likely differs to the way it was explored by Korf resulting in the last depth of IDA* exploring a different number of nodes.
+
+\subsubsection{Manhattan inadmissible heuristic}
+For the inadmissible heuristic in our path-finding results, we simply multiplied our Manhattan distance result by epsilon which was 2 in our results. 
+
+\subsection{Impact of bidirectional search on node exploration}
+On the path-finding reference problem using the Euclidean heuristic, as per Figure \ref{table:Pathfinder_comparison_nodes}, Bidirectional A* explores roughly 5 times the number of nodes when compared to standard A*. 
+
+On the $N$-puzzle reference problem using the Manhattan Distance heuristic, as per Figure \ref{table:N-Puzzle_comparison_nodes}, standard A* now performs much worse, exploring roughly 7 times the number of nodes when compared to Bidirectional A*. 
+
+Averaging over the results obtained in the tables mentioned above, the ratios hold even when the heuristic is changed. This leads us to believe that the nature of the two state spaces is likely a cause for the stark contrast observed. In the case of the path-finder problem, there is effectively one path out of the room in which the starting position has been placed. Once A* breaks out the room, it is a fairly straight forward descent to the goal. The Bidirectional search, however, wastes time in the backward portion of the search as it must find a way around the walls from the goal position, whilst the forward search is doing the work the standard A* algorithm does in any case.
+
+\subsection{Effects of inadmissible heuristics for path-finding}
+From the reference path-finding problem results we can see a significant decrease in the number of nodes explored when using our inadmissible heuristic. For the inadmissible heuristic we multiplied the Manhattan distance result by 2. For A* we can see a decrease from 1381 nodes explored to 306 and similarly for Bidirectional A* we can see a decrease from 7275 nodes explored to 1130. Even though our heuristic is inadmissible and may overestimate the actual cost by a factor of 2 it still managed to find the optimal path length of 62. Since this is basically making our Manhattan distance heuristic more greedy the higher the factor we multiply it by, we may see less optimal solutions being found in more complex problems.
+
+\bibliography{Search.bib} 
+\bibliographystyle{ieeetr}
+
+\end{document}
